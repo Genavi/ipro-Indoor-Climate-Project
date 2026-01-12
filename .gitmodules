@@ -1,0 +1,6 @@
+[submodule "templates/fhnw-ipro-indoor-climate-genavi"]
+	path = templates/fhnw-ipro-indoor-climate-genavi
+	url = git@github.com:Genavi/fhnw-ipro-indoor-climate.git
+[submodule "templates/ipro_strat_hs25"]
+	path = templates/ipro_strat_hs25
+	url = git@gitlab.fhnw.ch:david.ringgenberg/ipro_strat_hs25.git
