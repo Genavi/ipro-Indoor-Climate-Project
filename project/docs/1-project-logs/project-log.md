@@ -16,7 +16,62 @@
     - [ ]  Research microcontroller options
     - [ ]  Research communication protocols
 
-#### 12 January 2026
+### 13 January 2026
+
+#### Setup Repository on Raspberry Pi
+> Created new ssh key
+>
+> Added public key to gitlab
+>
+> Tried cloning repository to Raspberry Pi
+>
+> Failed. Connection Refused by gitlab.fhnw.ch
+>
+> Tried multiple possible solutions:
+> - Checked ssh config file
+> - Checked permissions of .ssh folder and files
+> - Restarted ssh-agent
+> - Verified ssh connection to gitlab.fhnw.ch
+> - Verified gitlab account settings
+> - Predefined ssh key for gitlab.fhnw.ch in ssh config
+> - Tried different network (home vs. Mobile hotspot)
+> - Searched online for similar issues
+> - Tried using port 443 instead of 22
+> - Ran verbose test with `ssh -vvv`
+> ```console
+> debug1: OpenSSH_10.0p2 Debian-7, OpenSSL 3.5.4 30 Sep 2025
+> debug3: Running on Linux 6.12.62+rpt-rpi-v8 #1 SMP PREEMPT Debian 1:6.12.62-1+rpt1 (2025-12-18) aarch64
+> debug3: Started with: ssh -vvv git@gitlab.fhwn.ch
+> debug1: Reading configuration data /home/genavi/.ssh/config
+> debug1: Reading configuration data /etc/ssh/ssh_config
+> debug3: /etc/ssh/ssh_config line 19: Including file /etc/ssh/ssh_config.d/20-systemd-ssh-proxy.conf depth 0
+> debug1: Reading configuration data /etc/ssh/ssh_config.d/20-systemd-ssh-proxy.conf
+> debug1: /etc/ssh/ssh_config line 21: Applying options for *
+> debug3: expanded UserKnownHostsFile '~/.ssh/known_hosts' -> '/home/genavi/.ssh/known_hosts'
+> debug3: expanded UserKnownHostsFile '~/.ssh/known_hosts2' -> '/home/genavi/.ssh/known_hosts2'
+> debug2: resolving "gitlab.fhwn.ch" port 22
+> debug3: resolve_host: lookup gitlab.fhwn.ch:22
+> debug3: channel_clear_timeouts: clearing
+> debug3: ssh_connect_direct: entering
+> debug1: Connecting to gitlab.fhwn.ch [147.86.2.81] port 22.
+> debug3: set_sock_tos: set socket 3 IP_TOS 0x10
+> debug1: Connection established.
+> debug1: identity file /home/genavi/.ssh/id_ed25519_fhnw type 3
+> debug1: identity file /home/genavi/.ssh/id_ed25519_fhnw-cert type -1
+> key_exchange_identification: Connection closed by remote host
+> Connection close by <ip > port 443
+> ```
+>
+> Still no success.
+>
+> Switch to using Gitlabs Personal Access Token over HTTPS as workaround for now.
+
+
+#### Setup Raspberry Pi OS on Raspberry Pi 3B+
+> Followed instructions from [Raspberry Pi Documentation - Install Raspberry Pi OS using Raspberry Pi Imager](https://www.raspberrypi.com/documentation/computers/getting-started.html#install-raspberry-pi-os-using-raspberry-pi-imager)
+
+
+### 12 January 2026
 
 > ```console
 > $ ls /dev/{tty,cu}.*
@@ -32,7 +87,7 @@
 > /dev/tty.usbmodem1102
 > ```
 
-##### Read ASCII bytes from a serial port
+#### Read ASCII bytes from a serial port
 
 > Reading using python successful.
 > ```console
@@ -73,15 +128,15 @@
 > ...
 > ```
 
-##### Write ASCII bytes to a serial port
+#### Write ASCII bytes to a serial port
 
 <kbd><img src="../../images/level-1-serial-write-co2.png" /></kbd>
 
-##### Prototype
+#### Prototype
 
 <kbd><img src="../../images/level-0-prototype.png" /></kbd>
 
-##### venv
+#### venv
 ```console
 $ cd templates/fhnw-ipro-indoor-climate-genavi/level-0
 $ python3 -m venv venv
@@ -91,7 +146,7 @@ $ source venv/bin/activate
 $ rm -r venv
 ```
 
-##### Repository setup
+#### Repository setup
 
 ```console
 $ git clone git@gitlab.fhnw.ch:david.ringgenberg/ipro-indoor-climate-project.git
