@@ -7,7 +7,7 @@ gantt
     Project Start : milestone, done, t0, 2026-01-12, 0d
     Working on project :active, t01, 2026-01-12, 5d
     Level 0 :done, t02, 2026-01-12, 1d
-    Level 1 :active, t03, after t02, 4d
+    Level 1 :done, t03, after t02, 4d
     Research available Sensors :active, t03, after t02, 4d
     Research available Microcontroller :active, t03, after t02, 4d
     Working on project : t2, 2026-01-19, 5d

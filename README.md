@@ -1,6 +1,30 @@
-# ipro: Indoor Climate Project
+<div align='center'>
+ <h1>
+  ipro: Indoor Climate Project
+ </h1>
 
-This repository contains the code and resources for the Indoor Climate Project (ipro).
+ <p>
+  This repository contains the code and resources for the Indoor Climate Project (ipro). See a Demo <a href='#'>here</a> (not ready yet).
+ </p>
+
+ <p>
+  <a href="https://www.python.org/"><img alt="Python" src="https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue" /></a>
+  <a href="https://docs.docker.com/compose/"><img alt="Docker Compose" src="https://img.shields.io/badge/Docker%20Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white" /></a>
+  <a href="https://grafana.com/"><img alt="Grafana" src="https://img.shields.io/badge/Grafana-F2F4F9?style=for-the-badge&logo=grafana&logoColor=orange&labelColor=F2F4F9" /></a>
+  <a href="https://www.postgresql.org/"><img alt="PostgreSQL" src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" /></a>
+  <a href="https://microbit.org/"><img alt="micro:bit" src="https://img.shields.io/badge/micro:bit-00ED00?style=for-the-badge&logo=micro:bit&logoColor=white" /></a>
+  <!-- Adding this later when using Raspberry Pi 3 B+ or Tuino 1
+  <a href="https://raspberrypi.org/"><img alt="Raspberry Pi" src="https://img.shields.io/badge/Raspberry%20Pi-C51A4A?style=for-the-badge&logo=raspberry-pi&logoColor=white" /></a>
+  <a href="https://arduino.cc/"><img alt="Arduino" src="https://img.shields.io/badge/Arduino-00979D?style=for-the-badge&logo=arduino&logoColor=white" /></a>
+ </p>
+ -->
+
+ <kbd><img src="./project/images/grafana-dashboard_v1.png" width="600" /></kbd>
+
+</div>
+
+<br />
+
 
 ## Repository Structure
 
@@ -19,4 +43,12 @@ cd <repository_directory>
 git submodule update --init --recursive
 ```
 
+## Getting started
+
 The [getting-started.md](project/docs/getting-started.md) file provides detailed instructions on setting up the development environment for the Indoor Climate Project.
+
+## Roadmap
+Check the [project plan](project/docs/0-project-plan/project-plan.md) for an overview of the project timeline, milestones, and levels.
+
+## License
+TBD

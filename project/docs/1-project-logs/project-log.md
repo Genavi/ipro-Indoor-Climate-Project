@@ -11,10 +11,18 @@
     - [x]  Finish level 0 tasks up to [**Use a venv virtual environment with Python**]
 - Learning IoT basics
     - [x]  Finish level 0 tasks up to [**Learn how to make a prototype**]
-    - [ ]  Finish level 1 tasks up to [**Visualize data in a visual component**]
+    - [x]  Finish level 1 tasks up to [**Visualize data in a visual component**]
     - [ ]  Research indoor climate sensors
     - [ ]  Research microcontroller options
     - [ ]  Research communication protocols
+
+### 15 January 2026
+
+> TBD
+
+### 16 January 2026
+
+> TBD
 
 ### 13 January 2026
 

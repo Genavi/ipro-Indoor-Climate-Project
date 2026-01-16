@@ -17,8 +17,12 @@ A list of personal hardware used in the project.
 - Power-over-Ethernet (PoE) support (requires separate PoE HAT)
 
 ## Microcontroller
+-Texas Instruments MSP430 LaunchPad
 - Arduino Uno
 - TUINO 1 
+
+## Wireless Communication
+- WiFi Module ESP8266
 
 ## Microcontroller Expansion
 - Grove Base Boosterpack v1.0
