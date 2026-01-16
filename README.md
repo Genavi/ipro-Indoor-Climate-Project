@@ -23,7 +23,7 @@
  </p>
  -->
 
- <kbd><img src="./project/images/grafana-dashboard_v1.png" width="600" /></kbd>
+ <kbd><img src="./project/docs/images/grafana-dashboard_v1.png" width="600" /></kbd>
 
 </div>
 

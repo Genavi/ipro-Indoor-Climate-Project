@@ -12,17 +12,47 @@
 - Learning IoT basics
     - [x]  Finish level 0 tasks up to [**Learn how to make a prototype**]
     - [x]  Finish level 1 tasks up to [**Visualize data in a visual component**]
-    - [ ]  Research indoor climate sensors
-    - [ ]  Research microcontroller options
+    - [x]  Research indoor climate sensors
+    - [x]  Research microcontroller options
     - [ ]  Research communication protocols
-
-### 15 January 2026
-
-> TBD
 
 ### 16 January 2026
 
-> TBD
+> setup .env, docker-compose-override.yml for local development
+>
+> updated documentation for setting up the development environment
+>
+> setting up alembic for database migrations (reason: https://dev.to/vivekthedev/effortless-database-migrations-why-alembic-is-your-python-must-have-2f0n)
+>
+> updating project repository to a more modular structure to keep the repository from getting too cluttered
+
+### 15 January 2026
+
+> setup Grafana (OSS) using docker-compose using the following resources:
+> - https://grafana.com/docs/grafana/latest/setup-grafana/installation/docker/#run-grafana-via-docker-compose
+> - https://grafana.com/docs/grafana/latest/setup-grafana/installation/docker/#save-your-grafana-data-1
+>
+> setup timescaledb using docker-compose
+>
+> implement basic data ingestion from micro:bit to timescaledb
+>
+> setup a grafana dashboard to visualize data from timescaledb
+>
+> let it run for a few hours to collect some data points
+>
+> <kdgb><img src="../images/grafana-dashboard_v1.png" width="600" /></kbd>
+
+> little personal Side-Quest:
+> setup Texas Instruments MSP430 microcontroller with VSCode/PlatformIO on macOS
+>
+> tested OLED Display, 4-Digit Display with MSP430 board
+> - had trouble getting the OLED Display to display properly.
+> - found out that the library I used (U8g2) was not meant for my OLED display. Switched to U8x8 library which worked fine.
+>
+> wasn't able to get the 4-Digit Display to work. Suspect chip issue. Tried multiple wiring setups and different libraries without success.
+> - when trying to check analog ports using a simple Button sensor script, the readings were all over the place.
+> - when trying to check if the port, connected to the button, was getting power, it showed another port (not connected to anything) getting power instead.
+> - when checking the pins, I noticed the GND pin was slightly nicked. Which could explain the faulty power communication.
 
 ### 13 January 2026
 
@@ -138,12 +168,11 @@
 
 #### Write ASCII bytes to a serial port
 
-<kbd><img src="../../images/level-1-serial-write-co2.png" /></kbd>
+<kbd><img src="../images/level-1-serial-write-co2.png" /></kbd>
 
 #### Prototype
 
-<kbd><img src="../../images/level-0-prototype.png" /></kbd>
-
+<kbd><img src="../images/level-0-prototype.png" /></kbd>
 #### venv
 ```console
 $ cd templates/fhnw-ipro-indoor-climate-genavi/level-0

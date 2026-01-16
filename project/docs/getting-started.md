@@ -4,9 +4,11 @@ This section provides instructions to set up the development environment for the
 ## Prerequisites
 
 Ensure you have the following installed on your system:
+- git
 - Python 3.8 or higher
-- pip (Python package installer)
+- pip/pip3 (package manager for Python)
 - virtualenv (optional but recommended)
+- Docker and Docker Compose (or Colima for macOS users)
 
 ## Setting Up the Development Environment
 1. **Create a Virtual Environment** (optional but recommended):
@@ -14,7 +16,7 @@ Ensure you have the following installed on your system:
     ```bash
     python3 -m venv venv
     source venv/bin/activate
-    ````
+    ```
 
 2. **Install Dependencies**:
     Install the required Python packages using pip:
@@ -35,13 +37,13 @@ Ensure you have the following installed on your system:
 
     You can use the provided `/project/.env.example` file as a template. Create a `.env` file in the `project/` directory and add your database credentials.
 
-5. **Update Docker Configuration**:
+5. **Update Docker Configuration** (optional):
 
     Update the `docker-compose.override.yml` file in the `project/` directory if you need to customize the Postgres or Grafana settings. You can use the provided example file `/project/docker-compose.override.yml.example` as a template. Database credentials are set via environment variables.
 
-## Start the Development Environment
+## Running the Development Environment
 
-Colima setup (macOS with Colima) - only if you use Colima as Docker backend:
+Colima setup (only if you use Colima as Docker backend):
 ```console
 $ colima start --network-address
 $ colima status
@@ -62,6 +64,18 @@ CONTAINER ID   IMAGE                               COMMAND                  CREA
 contains_id   grafana/grafana                     "/run.sh"                2 minutes ago   Up 2 minutes   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp   grafana
 contains_id   timescale/timescaledb:latest-pg15   "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes   0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp   postgres
 
+# Execute database commands inside the Postgres container
+docker exec -it <container_name> psql -U <your_db_user> -d <your_db_name>
+docker exec -it <container_name> psql -U <your_db_user> -d <your_db_name> -c "SELECT * FROM your_table_name;"
+docker exec -it <container_name> psql -U <your_db_user> -d <your_db_name> -c "\d your_table_name"
+
+```
+
+To stop the services, run:
+
+```console
+docker compose down
+docker compose down -v  # remove volumes as well (don't do this if you want to keep your database data)
 ```
 
 ## Access Services:
@@ -72,8 +86,3 @@ contains_id   timescale/timescaledb:latest-pg15   "docker-entrypoint.s…"   2 m
 
 If default ports don't work, check the port mappings in the `docker-compose.yml` file. Or use `docker ps` to see the actual port mappings.
     
-## Stopping the Development Environment
-To stop the services, run:
-```console
-docker compose down
-```
