@@ -52,7 +52,10 @@ git submodule update --init --recursive
 The [getting-started.md](project/docs/getting-started.md) file provides detailed instructions on setting up the development environment for the Indoor Climate Project.
 
 ## Roadmap
-Check the [project plan](project/docs/0-project-plan/project-plan.md) for an overview of the project timeline, milestones, and levels.
+Check the [project-plan.md](project/docs/0-project-plan/project-plan.md) for an overview of the project timeline, milestones, and levels.
+
+## Project Logs
+Progress and updates are documented in the [project-log.md](project/docs/1-project-logs/project-log.md#project-log).
 
 ## License
 TBD

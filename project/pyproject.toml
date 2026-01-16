@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "indoor-climate-project"
+version = "0.1.1"
+dependencies = [
+    "alembic==1.18.1",
+    "psycopg2==2.9.11",
+    "pyserial==3.5",
+    "python-dotenv==1.2.1",
+    "SQLAlchemy==2.0.45",
+    "typing_extensions==4.15.0"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
