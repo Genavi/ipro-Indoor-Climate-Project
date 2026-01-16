@@ -17,6 +17,26 @@
     - [x]  Research communication protocols
 
 ### 16 January 2026
+> continued working on setting up the project repository
+>
+> initialized alembic project
+> ```console
+> $ alembic init migrations
+> ```
+>
+> created database models based on excisting database schema
+>
+> created initial alembic migration script to set up database schema
+> ```console
+> $ alembic revision --autogenerate -m "initial migration"
+> $ alembic upgrade head
+> ```
+>
+> implemented serial reader to read data from micro:bit over serial USB connection
+>
+> implemented data parsing and saving to TimescaleDB using SQLAlchemy ORM
+>
+> 
 
 > setup .env, docker-compose-override.yml for local development
 >

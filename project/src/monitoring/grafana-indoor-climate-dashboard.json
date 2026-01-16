@@ -3,7 +3,7 @@
   "kind": "Dashboard",
   "metadata": {
     "name": "adzcr58",
-    "generation": 13,
+    "generation": 16,
     "creationTimestamp": "2026-01-15T21:43:15Z",
     "labels": {},
     "annotations": {}
@@ -109,7 +109,7 @@
                         "value": 44.6
                       },
                       {
-                        "color": "yellow",
+                        "color": "#eab839",
                         "value": 86
                       }
                     ]
@@ -252,7 +252,7 @@
                         "value": 600
                       },
                       {
-                        "color": "orange",
+                        "color": "#eab839",
                         "value": 1000
                       },
                       {
@@ -390,7 +390,7 @@
                         "value": 30
                       },
                       {
-                        "color": "orange",
+                        "color": "#eab839",
                         "value": 50
                       },
                       {
@@ -480,7 +480,7 @@
               "fieldConfig": {
                 "defaults": {
                   "color": {
-                    "mode": "palette-classic"
+                    "mode": "thresholds"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -491,16 +491,16 @@
                     "barAlignment": 0,
                     "barWidthFactor": 0.6,
                     "drawStyle": "line",
-                    "fillOpacity": 0,
-                    "gradientMode": "none",
+                    "fillOpacity": 20,
+                    "gradientMode": "scheme",
                     "hideFrom": {
                       "legend": false,
                       "tooltip": false,
                       "viz": false
                     },
                     "insertNulls": false,
-                    "lineInterpolation": "linear",
-                    "lineWidth": 1,
+                    "lineInterpolation": "smooth",
+                    "lineWidth": 3,
                     "pointSize": 5,
                     "scaleDistribution": {
                       "type": "linear"
@@ -520,12 +520,16 @@
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
+                        "color": "blue",
                         "value": 0
                       },
                       {
-                        "color": "red",
-                        "value": 80
+                        "color": "green",
+                        "value": 7
+                      },
+                      {
+                        "color": "#EAB839",
+                        "value": 30
                       }
                     ]
                   }
@@ -535,9 +539,9 @@
               "options": {
                 "legend": {
                   "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": true
+                  "displayMode": "hidden",
+                  "placement": "right",
+                  "showLegend": false
                 },
                 "tooltip": {
                   "hideZeros": false,
@@ -610,7 +614,7 @@
               "fieldConfig": {
                 "defaults": {
                   "color": {
-                    "mode": "palette-classic"
+                    "mode": "thresholds"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -621,16 +625,16 @@
                     "barAlignment": 0,
                     "barWidthFactor": 0.6,
                     "drawStyle": "line",
-                    "fillOpacity": 0,
-                    "gradientMode": "none",
+                    "fillOpacity": 20,
+                    "gradientMode": "scheme",
                     "hideFrom": {
                       "legend": false,
                       "tooltip": false,
                       "viz": false
                     },
                     "insertNulls": false,
-                    "lineInterpolation": "linear",
-                    "lineWidth": 1,
+                    "lineInterpolation": "smooth",
+                    "lineWidth": 3,
                     "pointSize": 5,
                     "scaleDistribution": {
                       "type": "linear"
@@ -650,12 +654,16 @@
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
+                        "color": "blue",
                         "value": 0
                       },
                       {
-                        "color": "red",
-                        "value": 80
+                        "color": "green",
+                        "value": 44.6
+                      },
+                      {
+                        "color": "#EAB839",
+                        "value": 86
                       }
                     ]
                   }
@@ -665,9 +673,9 @@
               "options": {
                 "legend": {
                   "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": true
+                  "displayMode": "hidden",
+                  "placement": "right",
+                  "showLegend": false
                 },
                 "tooltip": {
                   "hideZeros": false,
@@ -759,7 +767,7 @@
                         "value": 30
                       },
                       {
-                        "color": "orange",
+                        "color": "#eab839",
                         "value": 50
                       },
                       {
@@ -980,7 +988,7 @@
                         "value": 7
                       },
                       {
-                        "color": "yellow",
+                        "color": "#eab839",
                         "value": 30
                       }
                     ]

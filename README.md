@@ -15,13 +15,21 @@
   <a href="https://www.python.org/"><img alt="Python" src="https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue" /></a>
   <a href="https://docs.docker.com/compose/"><img alt="Docker Compose" src="https://img.shields.io/badge/Docker%20Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white" /></a>
   <a href="https://grafana.com/"><img alt="Grafana" src="https://img.shields.io/badge/Grafana-F2F4F9?style=for-the-badge&logo=grafana&logoColor=orange&labelColor=F2F4F9" /></a>
+ </p>
+
+ <p>
   <a href="https://www.postgresql.org/"><img alt="PostgreSQL" src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" /></a>
+  <a href="https://www.sqlalchemy.org/"><img alt="SQLAlchemy" src="https://img.shields.io/badge/SQLAlchemy-39003E?style=for-the-badge&logo=sqlalchemy&logoColor=white" /></a>
+  <a href="https://alembic.sqlalchemy.org/"><img alt="Alembic" src="https://img.shields.io/badge/Alembic-2D3E50?style=for-the-badge&logo=alembic&logoColor=white" /></a>
   <a href="https://microbit.org/"><img alt="micro:bit" src="https://img.shields.io/badge/micro:bit-00ED00?style=for-the-badge&logo=micro:bit&logoColor=white" /></a>
-  <!-- Adding this later when using Raspberry Pi 3 B+ or Tuino 1
+ </p>
+
+<!-- Adding this later when using Raspberry Pi 3 B+ or Tuino 1
+ <p>
   <a href="https://raspberrypi.org/"><img alt="Raspberry Pi" src="https://img.shields.io/badge/Raspberry%20Pi-C51A4A?style=for-the-badge&logo=raspberry-pi&logoColor=white" /></a>
   <a href="https://arduino.cc/"><img alt="Arduino" src="https://img.shields.io/badge/Arduino-00979D?style=for-the-badge&logo=arduino&logoColor=white" /></a>
  </p>
- -->
+-->
 
  <kbd><img src="./project/docs/images/grafana-dashboard_v1.png" width="600" /></kbd>
 
