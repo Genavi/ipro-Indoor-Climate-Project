@@ -40,13 +40,13 @@ This document provides instructions for maintaining the database used in the Ind
 1. **Generate Revision File**:
    To create a new migration script after modifying the database models, use the following command:
    ```console
-   $ alembic revision --autogenerate -m "your_message_here"
+   $ alembic revision --autogenerate -m "your message here"
    ```
-   Replace `"your_message_here"` with a brief description of the changes made (e.g., "add table components", "modify column types").
+   Replace `"your message here"` with a brief description of the changes made (e.g., "add table components", "modify column types").
 2. **Review Revision File**:
     After generating a revision file, review it in the `project/migrations/versions/` directory to ensure that the changes accurately reflect the intended modifications to the database schema.
 
-    > **Important**: When creating a new table, manually add 'op.execute("SELECT create_hypertable('<table_name>', '<time_column>', if_not_exists => TRUE);")' in the `upgrade()` function of the revision file to convert it into a hypertable. Check existing revision files for reference.
+    > **Important**: When creating a new table that will handle time-series data, manually add`'op.execute("SELECT create_hypertable('<table_name>', '<time_column>', if_not_exists => TRUE);")` in the `upgrade()` function of the revision file to convert it into a hypertable. Check existing revision files for reference.
 3. **Apply Migrations**:
    To apply the latest migrations to the database, run:
    ```console

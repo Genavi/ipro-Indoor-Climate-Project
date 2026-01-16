@@ -22,7 +22,6 @@ Ensure you have the following installed on your system:
     Install the required Python packages using pip.
 
     ```console
-    $ pip3 install --upgrade pip3
     $ pip3 install -e .
     ```
 
@@ -44,26 +43,15 @@ Ensure you have the following installed on your system:
 
     Update the `docker-compose.override.yml` file in the `project/` directory if you need to customize the Postgres or Grafana settings. You can use the provided example file `/project/docker-compose.override.yml.example` as a template. Database credentials are set via environment variables.
 
-6. **Initialize Database Schema**:
-    Run the database migrations to set up the initial schema.
-
-    ```console
-    # Check if database is reachable
-    $ alembic current
-
-    # Run migrations to set up the database schema
-    $ alembic upgrade head
-    ```
-
 ## Running the Development Environment
 
-1. Colima setup (only if you use Colima as Docker backend):
+1. **Colima setup** (only if you use Colima as Docker backend):
     ```console
     $ colima start --network-address
     $ colima status
     ```
 
-2. Use Docker Compose to start the services:
+2. **Start the services**:
     ```console
     $ cd project
     $ docker compose up -d
@@ -73,20 +61,40 @@ Ensure you have the following installed on your system:
     CONTAINER ID   IMAGE                               COMMAND                  CREATED          STATUS          PORTS                                         NAMES
     contains_id   grafana/grafana                     "/run.sh"                2 minutes ago   Up 2 minutes   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp   grafana
     contains_id   timescale/timescaledb:latest-pg15   "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes   0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp   postgres
-
+    ```
+    Some useful commands to check logs and access the database (not needed for initial setup):
+    ```console
+    # Check logs for Postgres and Grafana
+    $ docker compose logs -f postgres
+    $ docker compose logs -f grafana
+    
     # Execute database commands inside the Postgres container
     $ docker exec -it <container_name> psql -U <your_db_user> -d <your_db_name>
     $ docker exec -it <container_name> psql -U <your_db_user> -d <your_db_name> -c "SELECT * FROM your_table_name;"
     $ docker exec -it <container_name> psql -U <your_db_user> -d <your_db_name> -c "\d your_table_name"
-    ```
 
-    To stop the services, run:
-    ```console
+    # Stop the services
     $ docker compose down
-    docker compose down -v  # remove volumes as well (don't do this if you want to keep your database data)
+    $ docker compose down -v  # removes all volumes as well (don't do this if you want to keep your database data)
     ```
 
-3. Run the Data Logger:
+3. **Initialize Database Schema**:
+    Run the database migrations to set up the initial schema.
+
+    ```console
+    # Check if database is reachable
+    $ alembic current
+    INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+    INFO  [alembic.runtime.migration] Will assume transactional DDL.
+
+    # Run migrations to set up the database schema
+    $ alembic upgrade head
+    INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+    INFO  [alembic.runtime.migration] Will assume transactional DDL.
+    INFO  [alembic.runtime.migration] Running upgrade  -> 63b5248db74e, initial migration
+    ```
+
+4. Run the Data Logger:
     ```console
     $ python3 src/main.py
     ```
