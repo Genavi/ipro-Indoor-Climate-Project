@@ -1,6 +1,6 @@
 # Project Log
 
-## Week of 12 January 2026 - Current
+## Week of 12 January 2026
 
 ### Tasks:
 
@@ -14,7 +14,7 @@
     - [x]  Finish level 1 tasks up to [**Visualize data in a visual component**]
     - [x]  Research indoor climate sensors
     - [x]  Research microcontroller options
-    - [ ]  Research communication protocols
+    - [x]  Research communication protocols
 
 ### 16 January 2026
 
@@ -22,7 +22,9 @@
 >
 > updated documentation for setting up the development environment
 >
-> setting up alembic for database migrations (reason: https://dev.to/vivekthedev/effortless-database-migrations-why-alembic-is-your-python-must-have-2f0n)
+> learning to set up alembic for database migrations (reason: https://dev.to/vivekthedev/effortless-database-migrations-why-alembic-is-your-python-must-have-2f0n)
+> - Tutorial to [Alembic](https://alembic.sqlalchemy.org/en/latest/tutorial.html#)
+> - Documentation to [SQLAlchemy](https://docs.sqlalchemy.org/en/20/tutorial/index.html)
 >
 > updating project repository to a more modular structure to keep the repository from getting too cluttered
 
