@@ -1,0 +1,12 @@
+services:
+  postgres:
+    # ports:
+      #- "5432:5432"
+    # TODO: Uncomment and set up the environment variables as needed
+    # environment:
+      # POSTGRES_USER: admin
+      # POSTGRES_PASSWORD: password123
+      # POSTGRES_DB: sensor_data
+  #grafana:
+    # ports:
+      # - '3000:3000'

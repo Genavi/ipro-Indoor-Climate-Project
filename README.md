@@ -19,6 +19,4 @@ cd <repository_directory>
 git submodule update --init --recursive
 ```
 
-## Getting Started
-
-...
+The [getting-started.md](project/docs/getting-started.md) file provides detailed instructions on setting up the development environment for the Indoor Climate Project.
