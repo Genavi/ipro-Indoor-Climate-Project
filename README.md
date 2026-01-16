@@ -4,7 +4,11 @@
  </h1>
 
  <p>
-  This repository contains the code and resources for the Indoor Climate Project (ipro). See a Demo <a href='#'>here</a> (not ready yet).
+  This repository contains the code and resources for the Indoor Climate Project (ipro).
+ </p>
+
+ <p>
+  Check the <a href='#'>Demo</a> (planned).
  </p>
 
  <p>
