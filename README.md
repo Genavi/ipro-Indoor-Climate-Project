@@ -43,6 +43,12 @@
 The repository is organized into several key directories:
 - `project/`: Contains the main project code and documentation.
     - `docs/`: Contains documentation related to the project.
+    - `firmware/`: Contains the micro:bit firmware code.
+    - `migrations/`: Contains Alembic database migration scripts.
+    - `src/`: Contains the source code for the data logger and database interactions.
+        - `database/`: Contains database connection and model definitions.
+        - `monitoring/`: Contains grafana dasboard configurations.
+        - `utils/`: Contains utility functions such as the serial reader.
 - `templates/`: Contains template repositories 
     - `fhnw-ipro-indoor-climate-genavi/`: Template for the indoor climate project (GitHub).
     - `ipro_strat_hs25/`: Template for ipro project (FHNW GitLab).
