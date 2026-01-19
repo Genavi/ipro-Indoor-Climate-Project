@@ -76,6 +76,12 @@ def upgrade() -> None:
 
     # Manually added to create hypertable
     op.execute("SELECT create_hypertable('sensor_readings', 'timestamp', if_not_exists => TRUE);")
+    # Manually added to insert initial data
+    op.execute("INSERT INTO distributors (name, description, website) VALUES ('Seeed Technology Co.', 'Seeed Studio is a hardware innovation platform for makers to turn ideas into products.', 'https://www.seeedstudio.com/');")
+    op.execute("INSERT INTO locations (name, description) VALUES ('Home', 'This is my home.');")
+    op.execute("INSERT INTO locations (name, description) VALUES ('FHNW', 'Fachhochschule Nordwestschweiz.');")
+    op.execute("INSERT INTO readers (name, description, distributor) VALUES ('Default Reader', 'This is the default reader.', 1);")
+    op.execute("INSERT INTO components (name, description, reader, distributor, price_per_unit, website) VALUES ('CO2 & Temperature & Humidity Sensor v1.0 (SCD30)', 'This reader can measure CO2, temperature, and humidity.', 1, 1, 0.00, 'https://www.seeedstudio.com/');")
 
 
 def downgrade() -> None:

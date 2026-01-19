@@ -102,8 +102,26 @@ Ensure you have the following installed on your system:
     - Verify the database schema is up to date.
     - Connect to the serial port specified in the `.env` file.
     - Start reading data from the micro:bit and inserting it into the TimescaleDB database.
-    
 
+## Setup Grafana Dashboard
+1. Open Grafana in your web browser at `http://localhost:3000` (or `http://colima_gateway_ip:3000` if using Colima).
+2. Log in with the default credentials (admin/admin) and change the password when prompted.
+3. Add a new data source:
+   - Go to Configuration > Data Sources > Add data source.
+   - Select "PostgreSQL" as the data source type.
+   - Configure the data source with the following settings:
+     - Host: `host.docker.internal:5432` (or `colima_gateway_ip:5432` if using Colima)
+     - Database: `sensor_data`
+     - User: your database user (from `.env` file)
+     - Password: your database password (from `.env` file)
+     - SSL Mode: Disabled
+     - TimescaleDB: Enabled
+   - Click "Save & Test" to verify the connection.
+4. Import the provided Grafana dashboard JSON file:
+   - Go to Create > Import.
+   - Upload the `src/monitoring/grafana-indoor-climate-dashboard.json` file from the project repository.
+   - Select the PostgreSQL data source you just created.
+   - Click "Import" to add the dashboard.
 
 ## Access Services:
 
