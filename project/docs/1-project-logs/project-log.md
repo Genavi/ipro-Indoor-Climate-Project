@@ -1,5 +1,68 @@
 # Project Log
 
+## Week of 19 January 2026
+
+### Tasks:
+- Learning Iot basics
+    - [ ]  Finish level 3 tasks
+- Learn Telegraf with [InfluxDB University](https://university.influxdata.com/):
+    - [ ]  Complete "Telegraf Basics" course
+    - [ ]  Complete "Data Collection with Telegraf" course
+    - [ ]  Complete "Telegraf Administrator" course
+- Project
+    - [ ]  Learn about Telegraf Basics and Data Collection
+    - [ ]  Set up Cloud Solution for Data Storage and Visualization (TBD)
+    - [ ]  Set up Telegraf to read data from FeatherS3 via MQTT/SNMP/HTTP
+    - [ ]  Implement data ingestion from FeatherS3 to TimescaleDB
+    - [ ]  Update Grafana dashboard to include FeatherS3 data
+    - [ ]  Create unit tests for data ingestion and visualization components
+### 19 January 2026
+
+> Started learning Telegraf with InfluxDB University. Learning path [Learnings - Telegraf](../3-learnings/telegraf.md)
+
+> <kbd><img src="../images/version-2-prototype.png" width="600" /></kbd>
+>
+> Connected FeatherS3 to Macbook via USB-C cable
+>
+> Loaded SCD30 CircuitPython library onto FeatherS3
+> 
+> Wrote CircuitPython script to read SCD30 sensor data and output via serial
+> ```python
+> # CIRCUITPY/code.py
+> import adafruit_scd30
+> import board
+> import time
+> 
+> sensor = adafruit_scd30.SCD30(board.I2C())
+> 
+> while True:
+>     try:
+>         co2 = sensor.CO2
+>         temperature = sensor.temperature
+>         fahrenheit = temperature * 9 / 5 + 32
+>         celcius = temperature
+>         humidity = sensor.relative_humidity
+>         print(f"CO2: {co2} ppm, Temperature: {temperature} °C, {fahrenheit} °F, Humidity: {humidity} %")
+>     except Exception as e:
+>         print(f"Error reading sensor data: {e}")
+>     time.sleep(5)
+> ```
+>
+> Verified SCD30 sensor readings over serial using `screen`
+> ```console
+> $ screen /dev/tty.usbmodem4F21AF143F891 115200
+> Auto-reload is on. Simply save files over USB to run them or enter REPL to disable.
+> code.py output:
+> Hello World!
+> CO2: 1187.78 ppm, Temperature: 22.7169 °C, 72.8904 °F, Humidity: 50.7629 %
+> CO2: 1187.71 ppm, Temperature: 22.7569 °C, 72.9625 °F, Humidity: 50.676 %
+> CO2: 1186.65 ppm, Temperature: 22.7569 °C, 72.9625 °F, Humidity: 50.6042 %
+> CO2: 1187.48 ppm, Temperature: 22.7863 °C, 73.0153 °F, Humidity: 50.5844 %
+> CO2: 1187.94 ppm, Temperature: 22.7997 °C, 73.0394 °F, Humidity: 50.5402 %
+> CO2: 1187.86 ppm, Temperature: 22.8424 °C, 73.1163 °F, Humidity: 50.4303 %
+> CO2: 1187.77 ppm, Temperature: 22.8424 °C, 73.1163 °F, Humidity: 50.3479 %
+> ...
+
 ## Week of 12 January 2026
 
 ### Tasks:
@@ -50,6 +113,8 @@
 
 ### 15 January 2026
 
+> <kbd><img src="../images/version-1-prototype.png" width="600" /></kbd>
+>
 > setup Grafana (OSS) using docker-compose using the following resources:
 > - https://grafana.com/docs/grafana/latest/setup-grafana/installation/docker/#run-grafana-via-docker-compose
 > - https://grafana.com/docs/grafana/latest/setup-grafana/installation/docker/#save-your-grafana-data-1
@@ -62,7 +127,7 @@
 >
 > let it run for a few hours to collect some data points
 >
-> <kdgb><img src="../images/grafana-dashboard_v1.png" width="600" /></kbd>
+> <kbd><img src="../images/grafana-dashboard_v1.png" width="600" /></kbd>
 
 > little personal Side-Quest:
 > setup Texas Instruments MSP430 microcontroller with VSCode/PlatformIO on macOS
@@ -190,11 +255,11 @@
 
 #### Write ASCII bytes to a serial port
 
-<kbd><img src="../images/level-1-serial-write-co2.png" /></kbd>
+<kbd><img src="../images/level-1-serial-write-co2.png" width="600" /></kbd>
 
 #### Prototype
 
-<kbd><img src="../images/level-0-prototype.png" /></kbd>
+<kbd><img src="../images/version-0-prototype.png" width="600" /></kbd>
 #### venv
 ```console
 $ cd templates/fhnw-ipro-indoor-climate-genavi/level-0
