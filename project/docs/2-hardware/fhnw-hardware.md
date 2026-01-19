@@ -9,6 +9,8 @@ A list of hardware made available by FHNW for student projects.
 
 ## Sensors
 - CO2 & Temperature & Humidity Sensor (SCD30) v1.0
+- Adjustable PIR Motion Sensor v1.0
+- Button v1.2
 
 ## Cables
 - USB-C to micro-USB cable
