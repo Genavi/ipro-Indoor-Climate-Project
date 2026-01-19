@@ -18,8 +18,6 @@
     - [ ]  Create unit tests for data ingestion and visualization components
 ### 19 January 2026
 
-> Started learning Telegraf with InfluxDB University. Learning path [Learnings - Telegraf](../3-learnings/telegraf.md)
-
 > <kbd><img src="../images/version-2-prototype.png" width="600" /></kbd>
 >
 > Connected FeatherS3 to Macbook via USB-C cable
@@ -63,6 +61,8 @@
 > CO2: 1187.77 ppm, Temperature: 22.8424 °C, 73.1163 °F, Humidity: 50.3479 %
 > ...
 
+> Started learning Telegraf with InfluxDB University. Learning path [Learnings - Telegraf](../3-learnings/telegraf.md)
+
 ## Week of 12 January 2026
 
 ### Tasks:
@@ -80,6 +80,17 @@
     - [x]  Research communication protocols
 
 ### 16 January 2026
+
+> setup .env, docker-compose-override.yml for local development
+>
+> updated documentation for setting up the development environment
+>
+> learning to set up alembic for database migrations (reason: https://dev.to/vivekthedev/effortless-database-migrations-why-alembic-is-your-python-must-have-2f0n)
+> - Tutorial to [Alembic](https://alembic.sqlalchemy.org/en/latest/tutorial.html#)
+> - Documentation to [SQLAlchemy](https://docs.sqlalchemy.org/en/20/tutorial/index.html)
+>
+> updating project repository to a more modular structure to keep the repository from getting too cluttered
+
 > continued working on setting up the project repository
 >
 > initialized alembic project
@@ -101,17 +112,19 @@
 >
 > 
 
-> setup .env, docker-compose-override.yml for local development
->
-> updated documentation for setting up the development environment
->
-> learning to set up alembic for database migrations (reason: https://dev.to/vivekthedev/effortless-database-migrations-why-alembic-is-your-python-must-have-2f0n)
-> - Tutorial to [Alembic](https://alembic.sqlalchemy.org/en/latest/tutorial.html#)
-> - Documentation to [SQLAlchemy](https://docs.sqlalchemy.org/en/20/tutorial/index.html)
->
-> updating project repository to a more modular structure to keep the repository from getting too cluttered
-
 ### 15 January 2026
+
+> little personal Side-Quest:
+> setup Texas Instruments MSP430 microcontroller with VSCode/PlatformIO on macOS
+>
+> tested OLED Display, 4-Digit Display with MSP430 board
+> - had trouble getting the OLED Display to display properly.
+> - found out that the library I used (U8g2) was not meant for my OLED display. Switched to U8x8 library which worked fine.
+>
+> wasn't able to get the 4-Digit Display to work. Suspect chip issue. Tried multiple wiring setups and different libraries without success.
+> - when trying to check analog ports using a simple Button sensor script, the readings were all over the place.
+> - when trying to check if the port, connected to the button, was getting power, it showed another port (not connected to anything) getting power instead.
+> - when checking the pins, I noticed the GND pin was slightly nicked. Which could explain the faulty power communication.
 
 > <kbd><img src="../images/version-1-prototype.png" width="600" /></kbd>
 >
@@ -128,18 +141,6 @@
 > let it run for a few hours to collect some data points
 >
 > <kbd><img src="../images/grafana-dashboard_v1.png" width="600" /></kbd>
-
-> little personal Side-Quest:
-> setup Texas Instruments MSP430 microcontroller with VSCode/PlatformIO on macOS
->
-> tested OLED Display, 4-Digit Display with MSP430 board
-> - had trouble getting the OLED Display to display properly.
-> - found out that the library I used (U8g2) was not meant for my OLED display. Switched to U8x8 library which worked fine.
->
-> wasn't able to get the 4-Digit Display to work. Suspect chip issue. Tried multiple wiring setups and different libraries without success.
-> - when trying to check analog ports using a simple Button sensor script, the readings were all over the place.
-> - when trying to check if the port, connected to the button, was getting power, it showed another port (not connected to anything) getting power instead.
-> - when checking the pins, I noticed the GND pin was slightly nicked. Which could explain the faulty power communication.
 
 ### 13 January 2026
 
@@ -214,6 +215,23 @@
 
 #### Read ASCII bytes from a serial port
 
+> While trying to display CO2 values from the SCD30 sensor, encountered the following problem
+>
+> Problem while reading from serial port
+> ```console
+> $ screen /dev/tty.usbmodem1102 115200
+> $TERM too long - sorry
+> ```
+>
+> Solution: Was already running `screen` somewhere else. Closed all `screen` sessions from Activity Monitor > CPU and retried.
+> ```console
+> 1837.19738769531
+> 1837.61218261719
+> 1839.27307128906
+> 1840.57336425781
+> ...
+> ```
+
 > Reading using python successful.
 > ```console
 > (venv) $ pip uninstall serial
@@ -234,23 +252,6 @@
 > 
 > ```console
 > (venv) $ python level-1/Python/serial_read/serial_read.py$
-> ```
-
-> While trying to display CO2 values from the SCD30 sensor, encountered the following problem
->
-> Problem while reading from serial port
-> ```console
-> $ screen /dev/tty.usbmodem1102 115200
-> $TERM too long - sorry
-> ```
->
-> Solution: Was already running `screen` somewhere else. Closed all `screen` sessions from Activity Monitor > CPU and retried.
-> ```console
-> 1837.19738769531
-> 1837.61218261719
-> 1839.27307128906
-> 1840.57336425781
-> ...
 > ```
 
 #### Write ASCII bytes to a serial port
