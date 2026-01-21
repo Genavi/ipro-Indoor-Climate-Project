@@ -11,10 +11,12 @@ gantt
     Level 1 :done, t03, after t02, 4d
     Research available Sensors :done, t03, after t02, 4d
     Research available Microcontroller :done, t03, after t02, 4d
-    Working on project : t2, 2026-01-19, 5d
+    Working on project : active, t2, 2026-01-19, 5d
     Level 3 :active, t04, 2026-01-19, 5d
-    Learning Telegraf : active, t05, 2026-01-19, 2d
+    Learning Telegraf : done, t05, 2026-01-19, 2d
     Setup Cloud Solution : active, t06, after t05, 2d
+    Setup Networking: active, t07, after t05, 2d
+    Setup MQTT Broker : active, t08, after t05, 2d
     Setup Telegraf read/write from FeatherS3 : active, t07, after t05, 2d
     Ingestion from FeatherS3 to InfluxDB : active, t08, after t05, 2d
     Update Grafana Dashboard : active, t09, after t07, 1d

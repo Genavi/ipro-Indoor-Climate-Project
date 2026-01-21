@@ -1,25 +1,75 @@
 services:
+  tailscale:
+    image: tailscale/tailscale:latest
+    container_name: tailscale
+    hostname: iot-gateway
+    restart: always
+    environment:
+      - TS_AUTHKEY=${TAILSCALE_AUTH_KEY}
+      - TS_STATE_DIR=/var/lib/tailscale
+    volumes:
+      - tailscale_data:/var/lib/tailscale
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+      - sys_module
+    networks:
+      - iot_net
+
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto
+    restart: unless-stopped
+    volumes:
+      - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+    networks:
+      - iot_net
+
+  telegraf:
+    image: telegraf:latest
+    container_name: telegraf
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - mosquitto
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    networks:
+      - iot_net
+
   postgres:
     image: timescale/timescaledb:latest-pg15
     container_name: postgres
+    restart: unless-stopped
     environment:
         POSTGRES_USER: ${DATABASE_USER}
         POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
         POSTGRES_DB: ${DATABASE_NAME}
-    ports:
-      - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - iot_net
+
   grafana:
     image: grafana/grafana
     container_name: grafana
     restart: unless-stopped
-    ports:
-      - '3000:3000'
     depends_on:
       - postgres
     volumes:
-      - grafana-storage:/var/lib/grafana
+      - grafana_data:/var/lib/grafana
+    networks:
+      - iot_net
+
+networks:
+  iot_net:
+    driver: bridge
+
 volumes:
-  grafana-storage: {}
-  pgdata: {}
+  mosquitto_data: {}
+  mosquitto_log: {}
+  grafana_data: {}
+  tailscale_data: {}
+  postgres_data: {}

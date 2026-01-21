@@ -6,16 +6,143 @@
 - Learning Iot basics
     - [ ]  Finish level 3 tasks
 - Learn Telegraf with [InfluxDB University](https://university.influxdata.com/):
-    - [ ]  Complete "Telegraf Basics" course
-    - [ ]  Complete "Data Collection with Telegraf" course
-    - [ ]  Complete "Telegraf Administrator" course
+    - [x]  Complete "Telegraf Basics" course
+    - [ ]  ~~Complete "Data Collection with Telegraf" course~~ -> primarily focused on InfluxDB
+    - [x]  Complete "Telegraf Administrator" course
 - Project
-    - [ ]  Learn about Telegraf Basics and Data Collection
-    - [ ]  Set up Cloud Solution for Data Storage and Visualization (TBD)
-    - [ ]  Set up Telegraf to read data from FeatherS3 via MQTT/SNMP/HTTP
+    - [x]  Learn about Telegraf Basics and Data Collection
+    - [ ]  Set up Cloud Solution for Data Storage and Visualization
+    - [ ]  Set up secure networking with Tailscale
+    - [ ]  Set up Mosquitto MQTT Broker
+    - [ ]  Set up Telegraf to read data from FeatherS3 via MQTT/~~SNMP/HTTP~~
     - [ ]  Implement data ingestion from FeatherS3 to TimescaleDB
     - [ ]  Update Grafana dashboard to include FeatherS3 data
     - [ ]  Create unit tests for data ingestion and visualization components
+
+### 21 January 2026
+> Asked [Gemini](https://gemini.google.com/) for assistance in finding a cheap cloud solution for hosting TimescaleDB and Grafana.
+>
+> Query:
+> ```markdown
+> I want to be able to host multiple containers using docker-compose. Including Grafana OSS, PostgreSQL (TimescaleDB), Mosquitto, Telegraf. Help me decide if I should host this in the cloud or if there is an other way. It should be free of charge. Keep in mind, that I am a Computer Science student and might have academic prices
+> ```
+>
+> Suggested Solutions:
+> ```markdown
+> Hosting a stack with Grafana, TimescaleDB, Mosquitto, and Telegraf is a classic "TIG" (Telegraf, Influx/Timescale, Grafana) monitoring stack. For a computer science student, you have two primary paths: the Cloud (using student credits) or Self-Hosting (on a local server or old laptop).
+> 
+> Given your requirement for it to be free of charge, here is the breakdown to help you decide.
+> 
+> Option 1: The "Always Free" Cloud (Recommended)
+> Cloud providers offer "Always Free" tiers that are perfect for lightweight Docker Compose setups. Since you are a student, you have even better access.
+> 
+> 1. Oracle Cloud (Best for Resources)
+> Oracle Cloud is widely considered the "gold standard" for free hosting.
+> 
+> The Perk: Their ARM-based Ampere A1 instances provide up to 4 OCPUs and 24 GB of RAM for free.
+> 
+> Why it fits: TimescaleDB (PostgreSQL) can be memory-intensive. Having 24GB of RAM is massive and will easily handle your entire stack.
+> 
+> Catch: Availability can be tight in some regions. You may need to wait for a slot to open.
+> 
+> 2. GitHub Student Developer Pack (Best for Variety)
+> As a CS student, you should definitely sign up for this. It bundles several offers:
+> 
+> DigitalOcean: Usually includes $200 in credit (valid for 1 year). You can spin up a "Droplet" (VM), install Docker, and run your stack.
+> 
+> Microsoft Azure for Students: $100 annual credit + many free services (B1s VMs are often free for 12 months).
+> 
+> Heroku: Includes credits for students, though hosting a persistent database like TimescaleDB is trickier there than on a standard VM.
+> 
+> Option 2: The "Old Laptop" Way (Self-Hosting)
+> If you have an old laptop or a Raspberry Pi lying around, this is the most "authentic" CS experience.
+> 
+> Pros: Zero cost (besides a few cents of electricity), total privacy, and no "credit expiration" anxiety. It also teaches you about networking (Port Forwarding, Dynamic DNS).
+> 
+> Cons: If your home internet goes down, your dashboard goes down. You have to manage the hardware yourself.
+>
+> My Recommendation
+> Start with Oracle Cloud. 1. Apply for the Oracle Cloud Always Free tier. 2. Create a VM.Standard.A1.Flex instance (ARM). 3. Install Docker and Docker Compose. 4. If Oracle is unavailable in your region, use the DigitalOcean $200 credit from the GitHub Student Pack to get running immediately.
+> ```
+
+> Created a Oracle Cloud account with the "Free Tier" option.
+> -> Status: Pending approval by Oracle.
+> 
+
+> Planned project architecture with:
+> - [Oracle Cloud Infrastructure (OCI)](https://www.oracle.com/cloud/free/) as cloud provider
+> - [Tailscale](https://tailscale.com/) for secure networking
+> - [Mosquitto](https://mosquitto.org/) as MQTT broker
+> - [Telegraf](https://www.influxdata.com/time-series-platform/telegraf/) as data collector
+> - [TimescaleDB](https://www.timescale.com/) (Postgres) as time-series database
+> - [Grafana](https://grafana.com/) for data visualization
+>
+> <kbd><img src="../images/version-3-prototype.png" width="600" /></kbd>
+>
+> Miro link to the architecture diagram: [Miro - fhnw-ipro-indoor-climate](https://miro.com/app/board/uXjVGSZSySg=/?share_link_id=434076462743)
+>
+> <i>Icons from:</i>
+> - [Laptop Icon](https://www.flaticon.com/authors/those-icons)
+> - [Smartphone Icon](https://www.flaticon.com/authors/good-ware)
+> - [IoT Device Icon](https://www.flaticon.com/authors/hajicon)
+> - [Danger Icon](https://www.flaticon.com/authors/popcic)
+> - [Security Icon](https://www.flaticon.com/authors/ilham-fitrotul-hayat)
+
+> Started setting up [docker-compose.yml](../../docker-compose.yml) for cloud deployment based on existing local development setup.
+>
+> Added Tailscale, Mosquitto, Telegraf services.
+> - Because Tailscale handles secure networking, I removed the exposed ports for Mosquitto, Telegraf, Postgres and Grafana.
+>
+> Add netork iot_net for inter-container communication
+> 
+> Updated volume mounts to use named volumes instead of bind mounts for persistent data storage.
+> - Mosquitto data and log volumes
+> - Tailscale state volume
+> - Grafana data volume
+> - Postgres data volume
+>
+> Updated Volume names to properly reflect their purpose.
+> - 'pgdata' -> 'postgres_data'
+> - 'grafana-storage' -> 'grafana_data'
+
+
+### 20 January 2026
+> Finished "Telegraf Basics" course on InfluxDB University.
+
+> Researched Telegraf input plugins for FeatherS3 data collection:
+> - MQTT Consumer Plugin
+> - SNMP Input Plugin
+> - HTTP Listener Plugin
+> Decided to start with MQTT Consumer Plugin due to FeatherS3's built-in MQTT support.
+> Learned from the documentation how to configure Telegraf with MQTT Consumer Plugin.
+> ```toml
+> [[inputs.mqtt_consumer]]
+>   servers = ["tcp://<FEATHERS3_IP>:1883"]
+>   topics = ["sensors/indoor_climate"]
+>   qos = 0
+>   client_id = "telegraf_feathers3_client"
+>   data_format = "json"
+> ```
+>
+> Because I decided to use MQTT as communication protocol between FeatherS3 and Telegraf, I set up Mosquitto MQTT broker using Docker.
+> ```yaml
+> mosquitto:
+>   image: eclipse-mosquitto:latest
+>   container_name: mosquitto
+>   restart: unless-stopped
+>   volumes:
+>     - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+>     - ./mosquitto/data:/mosquitto/data
+>     - ./mosquitto/log:/mosquitto/log
+>   networks:
+>     - iot_net
+> ```
+>
+
+> While browsing [dev.to](https://dev.to/) for Raspberry Pi related articles, found this great article on setting up a HomeLab Gateway with Tailscale and Raspberry Pi: [tailscale-raspberry-pi-homelab-gateway-4fin](https://dev.to/neelp03/tailscale-raspberry-pi-homelab-gateway-4fin)
+>
+> I like the idea of using Tailscale for secure remote access to the IoT Gateway. Might implement this in the project later on.
+
 ### 19 January 2026
 
 > <kbd><img src="../images/version-2-prototype.png" width="600" /></kbd>
