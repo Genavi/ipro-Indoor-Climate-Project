@@ -2,9 +2,9 @@
   "apiVersion": "dashboard.grafana.app/v2beta1",
   "kind": "Dashboard",
   "metadata": {
-    "name": "adzcr58",
-    "generation": 16,
-    "creationTimestamp": "2026-01-15T21:43:15Z",
+    "name": "adpqwjf",
+    "generation": 4,
+    "creationTimestamp": "2026-01-23T20:41:02Z",
     "labels": {},
     "annotations": {}
   },
@@ -49,7 +49,7 @@
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT\n  time_bucket('10s', \"timestamp\") AS \"timestamp\",\n  sensor_4_name AS metric,\n  avg(sensor_4_value) as \"Fahrenheit Temperature\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"timestamp\") AND \n  reader IN ($reader_query)\nGROUP BY 1, 2\nORDER BY 1",
+                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  value as \"Temperature\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'temperature'\nORDER BY \"time\" DESC\nLIMIT 1",
                         "sql": {
                           "columns": [
                             {
@@ -156,7 +156,7 @@
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT\n  time_bucket('10s', \"timestamp\") AS \"timestamp\",\n  sensor_0_name AS metrix,\n  avg(sensor_0_value) as \"CO2\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"timestamp\") AND \n  reader IN ($reader_query)\nGROUP BY 1, 2\nORDER BY 1",
+                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  avg(value) as \"CO2\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'co2'\nGROUP BY 1, 2\nORDER BY 1",
                         "sql": {
                           "columns": [
                             {
@@ -301,7 +301,7 @@
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT\n  time_bucket('10s', \"timestamp\") AS \"timestamp\",\n  sensor_1_name AS metric,\n  avg(sensor_1_value) as \"Humidity\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"timestamp\") AND \n  reader IN ($reader_query)\nGROUP BY 1, 2\nORDER BY 1",
+                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  avg(value) as \"Humidity\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'humidity'\nGROUP BY 1, 2\nORDER BY 1",
                         "sql": {
                           "columns": [
                             {
@@ -439,7 +439,7 @@
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT\n  time_bucket('10s', \"timestamp\") AS \"timestamp\",\n  sensor_3_name AS metric,\n  avg(sensor_3_value) as \"Celcius Temperature\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"timestamp\") AND \n  reader IN ($reader_query)\nGROUP BY 1, 2\nORDER BY 1",
+                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  avg(value) as \"Temperature\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'temperature'\nGROUP BY 1, 2\nORDER BY 1",
                         "sql": {
                           "columns": [
                             {
@@ -573,7 +573,7 @@
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT\n  time_bucket('10s', \"timestamp\") AS \"timestamp\",\n  sensor_4_name AS metric,\n  avg(sensor_4_value) as \"Fahrenheit Temperature\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"timestamp\") AND \n  reader IN ($reader_query)\nGROUP BY 1, 2\nORDER BY 1",
+                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  avg(value) as \"Temperature\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'temperature'\nGROUP BY 1, 2\nORDER BY 1",
                         "sql": {
                           "columns": [
                             {
@@ -707,7 +707,7 @@
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT\n  time_bucket('10s', \"timestamp\") AS \"timestamp\",\n  sensor_1_name AS metric,\n  avg(sensor_1_value) as \"Humidity\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"timestamp\") AND \n  reader IN ($reader_query)\nGROUP BY 1, 2\nORDER BY 1",
+                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  value as \"Humidity\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'humidity'\nORDER BY \"time\" DESC\nLIMIT 1",
                         "sql": {
                           "columns": [
                             {
@@ -818,7 +818,7 @@
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT\n  time_bucket('10s', \"timestamp\") AS \"timestamp\",\n  sensor_0_name AS metrix,\n  avg(sensor_0_value) as \"CO2\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"timestamp\") AND \n  reader IN ($reader_query)\nGROUP BY 1, 2\nORDER BY 1",
+                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  value as \"CO2\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'co2'\nORDER BY \"time\" DESC\nLIMIT 1",
                         "sql": {
                           "columns": [
                             {
@@ -928,7 +928,7 @@
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT\n  time_bucket('10s', \"timestamp\") AS \"timestamp\",\n  sensor_3_name AS metric,\n  avg(sensor_3_value) as \"Celcius Temperature\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"timestamp\") AND \n  reader IN ($reader_query)\nGROUP BY 1, 2\nORDER BY 1",
+                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  value as \"Celcius\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'temperature'\nORDER BY \"time\" DESC\nLIMIT 1",
                         "sql": {
                           "columns": [
                             {
@@ -1028,7 +1028,7 @@
                 "kind": "ElementReference",
                 "name": "panel-8"
               },
-              "height": 7,
+              "height": 6,
               "width": 6,
               "x": 0,
               "y": 0
@@ -1041,7 +1041,7 @@
                 "kind": "ElementReference",
                 "name": "panel-7"
               },
-              "height": 7,
+              "height": 6,
               "width": 6,
               "x": 6,
               "y": 0
@@ -1054,7 +1054,7 @@
                 "kind": "ElementReference",
                 "name": "panel-9"
               },
-              "height": 7,
+              "height": 6,
               "width": 6,
               "x": 12,
               "y": 0
@@ -1067,7 +1067,7 @@
                 "kind": "ElementReference",
                 "name": "panel-10"
               },
-              "height": 7,
+              "height": 6,
               "width": 6,
               "x": 18,
               "y": 0
@@ -1080,23 +1080,10 @@
                 "kind": "ElementReference",
                 "name": "panel-2"
               },
-              "height": 7,
+              "height": 6,
               "width": 12,
               "x": 0,
-              "y": 7
-            }
-          },
-          {
-            "kind": "GridLayoutItem",
-            "spec": {
-              "element": {
-                "kind": "ElementReference",
-                "name": "panel-3"
-              },
-              "height": 7,
-              "width": 12,
-              "x": 12,
-              "y": 7
+              "y": 6
             }
           },
           {
@@ -1106,10 +1093,23 @@
                 "kind": "ElementReference",
                 "name": "panel-4"
               },
-              "height": 7,
+              "height": 6,
+              "width": 12,
+              "x": 12,
+              "y": 6
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-3"
+              },
+              "height": 6,
               "width": 12,
               "x": 0,
-              "y": 14
+              "y": 12
             }
           },
           {
@@ -1119,10 +1119,10 @@
                 "kind": "ElementReference",
                 "name": "panel-6"
               },
-              "height": 7,
+              "height": 6,
               "width": 12,
               "x": 12,
-              "y": 14
+              "y": 12
             }
           }
         ]
@@ -1152,12 +1152,12 @@
       "timezone": "browser",
       "to": "now"
     },
-    "title": "Indoor Climate",
+    "title": "Indoor Climate (iPad)",
     "variables": [
       {
         "kind": "QueryVariable",
         "spec": {
-          "allowCustomValue": false,
+          "allowCustomValue": true,
           "current": {
             "text": "",
             "value": ""

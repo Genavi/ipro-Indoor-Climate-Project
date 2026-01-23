@@ -71,6 +71,10 @@ services:
     image: grafana/grafana
     container_name: grafana
     restart: unless-stopped
+    environment:
+      - GF_SERVER_ROOT_URL=https://iot-gateway.tail7a645b.ts.net
+    ports:
+      - "3000:3000" # TODO: I exposed this for local development
     depends_on:
       - postgres
     volumes:
