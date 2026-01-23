@@ -52,19 +52,13 @@ class Component(Base):
 class SensorReading(Base):
     __tablename__ = "sensor_readings"
 
-    timestamp = Column(DateTime(timezone=True), primary_key=True, nullable=False)
+    time = Column(DateTime(timezone=True), primary_key=True, nullable=False)
     reader = Column(Integer, ForeignKey("readers.id"))
     location = Column(Integer, ForeignKey("locations.id"))
-    sensor_0_name = Column(Text)
-    sensor_0_value = Column(Float)
-    sensor_1_name = Column(Text)
-    sensor_1_value = Column(Float)
-    sensor_2_name = Column(Text)
-    sensor_2_value = Column(Float)
-    sensor_3_name = Column(Text)
-    sensor_3_value = Column(Float)
-    sensor_4_name = Column(Text)
-    sensor_4_value = Column(Float)
+    topic = Column(Text)
+    sensor_type = Column(Text)
+    value = Column(Float)
+    unit = Column(Text)
 
     reader_rel = relationship("Reader", back_populates="readings")
     location_rel = relationship("Location", back_populates="readings")
