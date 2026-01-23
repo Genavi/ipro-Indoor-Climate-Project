@@ -38,8 +38,17 @@ services:
     depends_on:
       - postgres
       - mosquitto
+      - tailscale
+    environment:
+      - MQTT_USERNAME=${MQTT_USERNAME}
+      - MQTT_PASSWORD=${MQTT_PASSWORD}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
     volumes:
       - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    dns:
+      - 100.100.100.100
     networks:
       - iot_net
 
@@ -53,6 +62,8 @@ services:
         POSTGRES_DB: ${DATABASE_NAME}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432" # TODO: I exposed this for local development
     networks:
       - iot_net
 
