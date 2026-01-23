@@ -4,20 +4,193 @@
 
 ### Tasks:
 - Learning Iot basics
-    - [ ]  Finish level 3 tasks
+    - [x]  Finish level 3 tasks
 - Learn Telegraf with [InfluxDB University](https://university.influxdata.com/):
     - [x]  Complete "Telegraf Basics" course
     - [ ]  ~~Complete "Data Collection with Telegraf" course~~ -> primarily focused on InfluxDB
     - [x]  Complete "Telegraf Administrator" course
 - Project
     - [x]  Learn about Telegraf Basics and Data Collection
-    - [ ]  Set up Cloud Solution for Data Storage and Visualization
-    - [ ]  Set up secure networking with Tailscale
-    - [ ]  Set up Mosquitto MQTT Broker
-    - [ ]  Set up Telegraf to read data from FeatherS3 via MQTT/~~SNMP/HTTP~~
+    - [ ]  Set up Cloud Solution for Data Storage and Visualization -> Delayed due to Oracle Cloud Free Tier account approval pending
+    - [x]  Set up secure networking with Tailscale
+    - [x]  Set up Mosquitto MQTT Broker
+    - [x]  Set up Telegraf to read data from FeatherS3 via MQTT/~~SNMP/HTTP~~
     - [ ]  Implement data ingestion from FeatherS3 to TimescaleDB
-    - [ ]  Update Grafana dashboard to include FeatherS3 data
+    - [x]  Update Grafana dashboard to include FeatherS3 data
     - [ ]  Create unit tests for data ingestion and visualization components
+
+### 23 January 2026
+> The Oracle Cloud Free Tier account is still in the process of being approved. So for now I will continue developing and testing the project locally using Docker Compose.
+>
+> Started configuring my communication setup
+>
+> ``FeatherS3 --(mqtt)--> Mosquitto -> Telegraf -> TimescaleDB -> Grafana``
+>
+> **Tailscale Setup**
+> 1. The IoT devices connect over the Tailscale mesh network to the Mosquitto MQTT broker.
+> 2. The MQTT broker uses the Tailscale Sidecar pattern `network_mode: "service:tailscale"`.
+> 3. Telegraf connects to Mosquitto via Tailscale MagicDNS from the Docker network.
+> 4. TimescaleDB and Grafana remain on the Docker network for internal communication.
+> 5. I expose Grafana on port 3000 on the host, local network `<colima-gateway-ip>:3000`, and via Tailscale serve I can connect Grafana with Tailscale serve over `https://iot-gateway.tail7a645b.ts.net` if I'm connected to the Tailscale mesh. It runs in the background of the Tailscale container using `tailscale serve --https=443 http://grafana:3000`.
+>       - With Tailscale serve, I can access Grafana securely over HTTPS without exposing it directly to the public internet.
+>       - With `docker exec tailscale tailscale serve status`, I can see the status of the Tailscale serve.
+>           ```console
+>           $ docker exec tailscale tailscale serve status                              
+>           https://iot-gateway.tail7a645b.ts.net (tailnet only)
+>           |-- / proxy http://grafana:3000
+>           ```
+>
+> **Reasoning**
+> - MQTT broker not exposed on public ports, only accessible through Tailscale mesh
+> - All IoT device traffic encrypted via Tailscale VPN
+> - Database remains isolated on Docker network
+>
+> For setup Tailscale properly, I'm following the Tailscale Docker setup guide [Using Tailscale with Docker](https://tailscale.com/kb/1282/docker) and Blog Post [Contain your excitement: A deep dive into using Tailscale with Docker](https://tailscale.com/blog/docker-tailscale-guide),
+>
+
+> Updated my database sensor_readings table to a more generic schema to support multiple sensor types from FeatherS3 based on the data format sent via MQTT. Telegraf will handle and parse the incoming data to fit the database schema.
+>
+> Previous schema:
+> ```console
+>                        Table "public.sensor_readings"
+>      Column     |           Type           | Collation | Nullable | Default
+> ----------------+--------------------------+-----------+----------+---------
+>  timestamp      | timestamp with time zone |           | not null |
+>  reader         | integer                  |           |          |
+>  location       | integer                  |           |          |
+>  sensor_0_name  | text                     |           |          |
+>  sensor_0_value | double precision         |           |          |
+>  sensor_1_name  | text                     |           |          |
+>  sensor_1_value | double precision         |           |          |
+>  sensor_2_name  | text                     |           |          |
+>  sensor_2_value | double precision         |           |          |
+>  sensor_3_name  | text                     |           |          |
+>  sensor_3_value | double precision         |           |          |
+>  sensor_4_name  | text                     |           |          |
+>  sensor_4_value | double precision         |           |          |
+> Indexes:
+>     "sensor_readings_pkey" PRIMARY KEY, btree ("timestamp")
+> Foreign-key constraints:
+>     "sensor_readings_location_fkey" FOREIGN KEY (location) REFERENCES locations(id)
+>     "sensor_readings_reader_fkey" FOREIGN KEY (reader) REFERENCES readers(id)
+> ```
+>
+> New schema:
+> ```console
+>                      Table "public.sensor_readings"
+>    Column    |           Type           | Collation | Nullable | Default
+> -------------+--------------------------+-----------+----------+---------
+>  timestamp   | timestamp with time zone |           | not null |
+>  reader      | integer                  |           |          |
+>  location    | integer                  |           |          |
+>  topic       | text                     |           |          |
+>  sensor_type | text                     |           |          |
+>  value       | double precision         |           |          |
+>  unit        | text                     |           |          |
+> Indexes:
+>     "sensor_readings_pkey" PRIMARY KEY, btree ("timestamp")
+> Foreign-key constraints:
+>     "sensor_readings_location_fkey" FOREIGN KEY (location) REFERENCES locations(id)
+>     "sensor_readings_reader_fkey" FOREIGN KEY (reader) REFERENCES readers(id)
+> ```
+>
+> Update grafana dashboard to reflect new schema
+> ```sql
+> -- Latest Value Query
+> SELECT
+>   "timestamp",
+>   sensor_type,
+>   value AS "CO2"
+> FROM sensor_readings
+> WHERE
+>   $__timeFilter("timestamp") AND 
+>   reader IN ($reader_query) AND
+>   sensor_type = 'co2'
+> ORDER BY "timestamp" DESC
+> LIMIT 1
+>
+> -- Time Series Query 
+> SELECT
+>   time_bucket('10s', "timestamp") AS "timestamp",
+>   sensor_type,
+>   avg(value) AS "CO2"
+> FROM sensor_readings
+> WHERE
+>   $__timeFilter("timestamp") AND 
+>   reader IN ($reader_query) AND
+>   sensor_type = 'co2'
+> GROUP BY 1, 2
+> ORDER BY 1
+> ```
+
+> Now the following containers are running properly: Tailscale, TimescaleDB, Grafana. My next step is to get the MQTT broker to be ready.
+>
+> **MQTT Broker Setup**
+> - For the MQTT broker to work properly I added the mosquitto.conf file with authentication settings and persistence settings.
+> - Created a password file using `docker run -it --rm -v "$(pwd)/mosquitto/config:/mosquitto/config" eclipse-mosquitto \\n  mosquitto_passwd -b /mosquitto/config/pwfile <username> <password>` command to add a user for authentication.
+> - After restarting the mosquitto container, I was able to check the MQTT connection using the following command:
+>   ```console
+>   $ docker run -it --rm --network project_iot_net eclipse-mosquitto mosquitto_pub \
+>     -h iot-gateway \
+>     -p 1883 \
+>     -t "sensors/test" \
+>     -u "<username>" \
+>     -P "<password>" \
+>     -m '{"reader":1,"location":1,"topic":"sensors/test","unit":"ppm","sensor_type":"co2","value":450.12345678234234}'
+>   ```
+>
+> **Telegraf Setup**
+> - Configured Telegraf to read data from Mosquitto using the MQTT Consumer input plugin.
+> - Configured the MQTT Consumer plugin with Tailscale MagicDNS hostname to connect to the Mosquitto broker.
+>   - I noticed Telegraf was not able to connect to Mosquitto initially. Telegraf config could not get the .env variables properly. I passed the variables directly in the telegraf.conf file to fix the issue.
+> - Configured the data format as JSON to parse the incoming sensor data.
+>   - Had to try a couple of approaches to get the data parsing right.
+>       - telegraf ouput plugin for postgresql expected the timestamp field to be named "time" instead of "timestamp". Updated my database schema accordingly.
+>       - values didn't pass because they were not formatted propperly. Used the Processor Plugin "converter" to convert the data types properly.
+>           ```console
+>           $ docker exec -it postgres psql -U admin -d sensor_data -c "select * from sensor_readings;"
+>                        time              | reader | location |    topic     | sensor_type |       value        | unit |     host
+>           -------------------------------+--------+----------+--------------+-------------+--------------------+------+--------------
+>            2026-01-23 21:51:28.908198+00 |        |          | sensors/test | co2         |                450 |      | dd6579041345
+>           (7 rows)
+>           ```
+>       - unit and topic were not passed correctly. I defined "sensory_type", "unit" and "topic" as string tags in the mqtt_consumer input plugin and in the converter processor plugin.
+>           ```console
+>           $ docker exec -it postgres psql -U admin -d sensor_data -c "select * from sensor_readings;"
+>                        time              | reader | location |    topic     | sensor_type |       value        | unit |     host
+>           -------------------------------+--------+----------+--------------+-------------+--------------------+------+--------------
+>            2026-01-23 21:51:28.908198+00 |        |          | sensors/test | co2         |                450 |      | dd6579041345
+>            2026-01-23 22:01:30.931239+00 |      1 |        1 | sensors/test |             |  450.1234567823423 |      | dd6579041345
+>            2026-01-23 22:02:56.091213+00 |      1 |        1 | sensors/test |             |  451.1234567823423 |      | dd6579041345
+>           (7 rows)
+>           ```
+> - Configured the output plugin to write data to TimescaleDB.
+> - After restarting the Telegraf container, I checked the logs to verify that data was being ingested properly from Mosquitto to TimescaleDB.
+> - Verified data ingestion by following the logs, querying the sensor_readings table in TimescaleDB and checking Grafana dashboard for incoming data points.
+>   ```console
+>   $ docker run -it --rm --network project_iot_net eclipse-mosquitto mosquitto_pub \
+>     -h iot-gateway \
+>     -p 1883 \
+>     -t "sensors/test" \
+>     -u "<username>" \
+>     -P "<password>" \
+>     -m '{"reader":1,"location":1,"topic":"sensors/test","unit":"ppm","sensor_type":"co2","value":450.12345678234234}'
+>   ```
+>   ```console
+>   $ docker exec -it postgres psql -U admin -d sensor_data -c "select * from sensor_readings;"
+>                time              | reader | location |    topic     | sensor_type |       value        | unit |     host
+>   -------------------------------+--------+----------+--------------+-------------+--------------------+------+--------------
+>    2026-01-23 21:51:28.908198+00 |        |          | sensors/test | co2         |                450 |      | dd6579041345
+>    2026-01-23 22:01:30.931239+00 |      1 |        1 | sensors/test |             |  450.1234567823423 |      | dd6579041345
+>    2026-01-23 22:02:56.091213+00 |      1 |        1 | sensors/test |             |  451.1234567823423 |      | dd6579041345
+>    2026-01-23 22:06:01.268778+00 |      1 |        1 | sensors/test | co2         |  451.1234567823423 | ppm  | dd6579041345
+>    2026-01-23 22:07:04.090078+00 |      1 |        1 | sensors/test | co2         |  450.1234567823423 | ppm  | dd6579041345
+>    2026-01-23 22:07:25.223446+00 |      1 |        1 | sensors/test | co2         | 1450.1234567823424 | ppm  | dd6579041345
+>    2026-01-23 22:07:36.145941+00 |      1 |        1 | sensors/test | co2         |  450.1234567823423 | ppm  | dd6579041345
+>   (7 rows)
+>   ```
+> - So in the end I used three plugins. Input: mqtt_consumer, Processor: converter, Output: postgresql.
+
 
 ### 21 January 2026
 > Asked [Gemini](https://gemini.google.com/) for assistance in finding a cheap cloud solution for hosting TimescaleDB and Grafana.
