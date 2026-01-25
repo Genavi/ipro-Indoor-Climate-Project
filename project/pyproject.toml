@@ -11,7 +11,7 @@ dependencies = [
     "pyserial==3.5",
     "python-dotenv==1.2.1",
     "SQLAlchemy==2.0.45",
-    "typing_extensions==4.15.0"
+    "typing_extensions==4.15.0",
     "paho-mqtt==2.1.0"
 ]
 
