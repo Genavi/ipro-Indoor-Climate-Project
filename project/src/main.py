@@ -1,25 +1,22 @@
-import sys
 import os
-from alembic.config import Config
-from alembic import command
+import serial
+import paho.mqtt.client as mqtt
 from dotenv import load_dotenv
 
 from src.utils.serial_reader import start_reading
+from src.utils.database import run_migrations
 
-def run_migrations():
-    print("Checking for database updates...")
-    try:
-        alembic_cfg = Config("alembic.ini")
-        command.upgrade(alembic_cfg, "head")
-        print("Success: Database is at the latest version.")
-    except Exception as e:
-        print(f"Error: Migration failed: {e}")
-        sys.exit(1)
+ser = serial.Serial(os.getenv('SERIAL_PORT'), int(os.getenv('BAUDRATE')))
+
+client = mqtt.Client()
+client.username_pw_set(os.getenv('MQTT_USERNAME'), os.getenv('MQTT_PASSWORD'))
+client.connect(os.getenv('MQTT_BROKER'), int(os.getenv('MQTT_PORT')), 60)
 
 def main():
     load_dotenv()
-    run_migrations()
-    start_reading(os.getenv("SERIAL_PORT"), os.getenv("BAUDRATE"))
+    if os.getenv("OUTPUT_METHOD") == "database":
+        run_migrations()
+    start_reading(os.getenv("SERIAL_PORT"), os.getenv("BAUDRATE"), os.getenv("OUTPUT_METHOD"), client)
 
 if __name__ == "__main__":
     main()
