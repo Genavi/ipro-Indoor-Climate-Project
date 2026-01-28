@@ -2,9 +2,9 @@
   "apiVersion": "dashboard.grafana.app/v2beta1",
   "kind": "Dashboard",
   "metadata": {
-    "name": "adtvczf",
+    "name": "adfm5wd",
     "generation": 3,
-    "creationTimestamp": "2026-01-23T19:41:08Z",
+    "creationTimestamp": "2026-01-23T21:45:30Z",
     "labels": {},
     "annotations": {}
   },
@@ -49,7 +49,7 @@
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  value as \"Temperature\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'temperature'\nORDER BY \"time\" DESC\nLIMIT 1",
+                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  unit,\n  value as \"Celcius\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'temperature' AND\n  unit = '°F'\nORDER BY \"time\" DESC\nLIMIT 1",
                         "sql": {
                           "columns": [
                             {
@@ -113,7 +113,8 @@
                         "value": 86
                       }
                     ]
-                  }
+                  },
+                  "unit": "fahrenheit"
                 },
                 "overrides": []
               },
@@ -260,7 +261,8 @@
                         "value": 1500
                       }
                     ]
-                  }
+                  },
+                  "unit": "ppm"
                 },
                 "overrides": []
               },
@@ -398,7 +400,8 @@
                         "value": 60
                       }
                     ]
-                  }
+                  },
+                  "unit": "humidity"
                 },
                 "overrides": []
               },
@@ -439,7 +442,7 @@
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  avg(value) as \"Temperature\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'temperature'\nGROUP BY 1, 2\nORDER BY 1",
+                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  unit,\n  avg(value) as \"Temperature\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'temperature' AND\n  unit = '°C'\nGROUP BY 1, 2, 3\nORDER BY 1",
                         "sql": {
                           "columns": [
                             {
@@ -532,7 +535,8 @@
                         "value": 30
                       }
                     ]
-                  }
+                  },
+                  "unit": "celsius"
                 },
                 "overrides": []
               },
@@ -573,7 +577,7 @@
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  avg(value) as \"Temperature\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'temperature'\nGROUP BY 1, 2\nORDER BY 1",
+                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  unit,\n  avg(value) as \"Temperature\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'temperature' AND\n  unit = '°F'\nGROUP BY 1, 2, 3\nORDER BY 1",
                         "sql": {
                           "columns": [
                             {
@@ -666,7 +670,8 @@
                         "value": 86
                       }
                     ]
-                  }
+                  },
+                  "unit": "fahrenheit"
                 },
                 "overrides": []
               },
@@ -775,7 +780,8 @@
                         "value": 60
                       }
                     ]
-                  }
+                  },
+                  "unit": "humidity"
                 },
                 "overrides": []
               },
@@ -885,7 +891,8 @@
                         "value": 1500
                       }
                     ]
-                  }
+                  },
+                  "unit": "ppm"
                 },
                 "overrides": []
               },
@@ -928,7 +935,7 @@
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  value as \"Celcius\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'temperature'\nORDER BY \"time\" DESC\nLIMIT 1",
+                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  unit,\n  value as \"Celcius\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'temperature' AND\n  unit = '°C'\nORDER BY \"time\" DESC\nLIMIT 1",
                         "sql": {
                           "columns": [
                             {
@@ -992,7 +999,8 @@
                         "value": 30
                       }
                     ]
-                  }
+                  },
+                  "unit": "celsius"
                 },
                 "overrides": []
               },
