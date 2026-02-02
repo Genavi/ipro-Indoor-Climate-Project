@@ -1,11 +1,21 @@
+secrets:
+  database_password:
+    file: ../secrets/db_password.txt
+  mqtt_password:
+    file: ../secrets/mqtt_password.txt
+  tailscale_authkey:
+    file: ../secrets/ts_authkey.txt
+
 services:
   tailscale:
     image: tailscale/tailscale:latest
     container_name: tailscale
     hostname: iot-gateway
     restart: always
+    secrets:
+      - tailscale_authkey
     environment:
-      - TS_AUTHKEY=${TAILSCALE_AUTH_KEY}
+      - TS_AUTHKEY_FILE=/run/secrets/tailscale_authkey
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_ACCEPT_DNS=false
       - TS_HOSTNAME=iot-gateway
@@ -35,15 +45,18 @@ services:
     image: telegraf:latest
     container_name: telegraf
     restart: unless-stopped
+    secrets:
+      - mqtt_password
+      - database_password
     depends_on:
       - postgres
       - mosquitto
       - tailscale
     environment:
       - MQTT_USERNAME=${MQTT_USERNAME}
-      - MQTT_PASSWORD=${MQTT_PASSWORD}
+      - MQTT_PASSWORD_FILE=/run/secrets/mqtt_password
       - DATABASE_USER=${DATABASE_USER}
-      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_PASSWORD_FILE=/run/secrets/database_password
       - DATABASE_NAME=${DATABASE_NAME}
     volumes:
       - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
@@ -56,14 +69,14 @@ services:
     image: timescale/timescaledb:latest-pg15
     container_name: postgres
     restart: unless-stopped
+    secrets:
+      - database_password
     environment:
         POSTGRES_USER: ${DATABASE_USER}
-        POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+        POSTGRES_PASSWORD_FILE: /run/secrets/database_password
         POSTGRES_DB: ${DATABASE_NAME}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432" # TODO: I exposed this for local development
     networks:
       - iot_net
 
@@ -73,8 +86,6 @@ services:
     restart: unless-stopped
     environment:
       - GF_SERVER_ROOT_URL=https://iot-gateway.tail7a645b.ts.net
-    ports:
-      - "3000:3000" # TODO: I exposed this for local development
     depends_on:
       - postgres
     volumes:
