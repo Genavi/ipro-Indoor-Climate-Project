@@ -12,6 +12,7 @@ services:
     container_name: tailscale
     hostname: iot-gateway
     restart: always
+    user: "0"
     secrets:
       - tailscale_authkey
     environment:
@@ -45,6 +46,7 @@ services:
     image: telegraf:latest
     container_name: telegraf
     restart: unless-stopped
+    user: "0"
     secrets:
       - mqtt_password
       - database_password
@@ -69,12 +71,13 @@ services:
     image: timescale/timescaledb:latest-pg15
     container_name: postgres
     restart: unless-stopped
+    user: "0"
     secrets:
       - database_password
     environment:
-        POSTGRES_USER: ${DATABASE_USER}
-        POSTGRES_PASSWORD_FILE: /run/secrets/database_password
-        POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD_FILE: /run/secrets/database_password
+      POSTGRES_DB: ${DATABASE_NAME}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
