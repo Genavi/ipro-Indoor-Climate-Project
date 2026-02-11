@@ -1,25 +1,14 @@
-secrets:
-  database_password:
-    file: ../secrets/db_password.txt
-  mqtt_password:
-    file: ../secrets/mqtt_password.txt
-  tailscale_authkey:
-    file: ../secrets/ts_authkey.txt
-
 services:
   tailscale:
     image: tailscale/tailscale:latest
     container_name: tailscale
     hostname: iot-gateway
     restart: always
-    user: "0"
-    secrets:
-      - tailscale_authkey
     environment:
-      - TS_AUTHKEY_FILE=/run/secrets/tailscale_authkey
-      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_AUTHKEY=${TAILSCALE_AUTH_KEY}
       - TS_ACCEPT_DNS=false
-      - TS_HOSTNAME=iot-gateway
+      - TS_HOSTNAME=iot-gateway-local
+      - TS_STATE_DIR=/var/lib/tailscale
     volumes:
       - tailscale_data:/var/lib/tailscale
       - /dev/net/tun:/dev/net/tun
@@ -46,19 +35,15 @@ services:
     image: telegraf:latest
     container_name: telegraf
     restart: unless-stopped
-    user: "0"
-    secrets:
-      - mqtt_password
-      - database_password
     depends_on:
       - postgres
       - mosquitto
       - tailscale
     environment:
       - MQTT_USERNAME=${MQTT_USERNAME}
-      - MQTT_PASSWORD_FILE=/run/secrets/mqtt_password
+      - MQTT_PASSWORD=${MQTT_PASSWORD}
       - DATABASE_USER=${DATABASE_USER}
-      - DATABASE_PASSWORD_FILE=/run/secrets/database_password
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_NAME=${DATABASE_NAME}
     volumes:
       - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
@@ -71,13 +56,12 @@ services:
     image: timescale/timescaledb:latest-pg15
     container_name: postgres
     restart: unless-stopped
-    user: "0"
-    secrets:
-      - database_password
     environment:
       POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD_FILE: /run/secrets/database_password
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: ${DATABASE_NAME}
+    ports:
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -89,6 +73,8 @@ services:
     restart: unless-stopped
     environment:
       - GF_SERVER_ROOT_URL=https://iot-gateway.tail7a645b.ts.net
+    ports:
+      - "3000:3000"
     depends_on:
       - postgres
     volumes:
