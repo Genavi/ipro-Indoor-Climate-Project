@@ -59,7 +59,7 @@ cover/
 *.log
 docker-compose.override.yml
 .dockerignore
-secrets/*
+secrets
 
 # Translations
 *.mo
