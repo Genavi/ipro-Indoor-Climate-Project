@@ -1,0 +1,615 @@
+{
+    "apiVersion": 1,
+    "groups": [
+        {
+            "orgId": 1,
+            "name": "sensor_data_group",
+            "folder": "Alerting",
+            "interval": "1m",
+            "rules": [
+                {
+                    "uid": "cfcv4nzci8xz4c",
+                    "title": "Indoor Climate: Healthcheck",
+                    "condition": "C",
+                    "data": [
+                        {
+                            "refId": "A",
+                            "relativeTimeRange": {
+                                "from": 120,
+                                "to": 0
+                            },
+                            "datasourceUid": "bfc0wjl07m9dsb",
+                            "model": {
+                                "dataset": "sensor_data",
+                                "editorMode": "code",
+                                "format": "table",
+                                "intervalMs": 1000,
+                                "maxDataPoints": 43200,
+                                "rawQuery": true,
+                                "rawSql": "SELECT\n  $__timeGroupAlias(\"time\", '1m'),\n  COUNT(value) as reading_count\nFROM\n  sensor_readings\nWHERE\n  $__timeFilter(\"time\")\nGROUP BY 1\nORDER BY 1",
+                                "refId": "A",
+                                "sql": {
+                                    "columns": [
+                                        {
+                                            "name": "COUNT",
+                                            "parameters": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "functionParameter"
+                                                }
+                                            ],
+                                            "type": "function"
+                                        }
+                                    ],
+                                    "groupBy": [],
+                                    "limit": 50,
+                                    "whereJsonTree": {
+                                        "children1": [],
+                                        "id": "989b989a-0123-4456-b89a-b19c49b733ad",
+                                        "type": "group"
+                                    }
+                                },
+                                "table": "sensor_readings"
+                            }
+                        },
+                        {
+                            "refId": "B",
+                            "relativeTimeRange": {
+                                "from": 0,
+                                "to": 0
+                            },
+                            "datasourceUid": "__expr__",
+                            "model": {
+                                "conditions": [
+                                    {
+                                        "evaluator": {
+                                            "params": [],
+                                            "type": "gt"
+                                        },
+                                        "operator": {
+                                            "type": "and"
+                                        },
+                                        "query": {
+                                            "params": [
+                                                "B"
+                                            ]
+                                        },
+                                        "reducer": {
+                                            "params": [],
+                                            "type": "last"
+                                        },
+                                        "type": "query"
+                                    }
+                                ],
+                                "datasource": {
+                                    "type": "__expr__",
+                                    "uid": "__expr__"
+                                },
+                                "expression": "A",
+                                "intervalMs": 1000,
+                                "maxDataPoints": 43200,
+                                "reducer": "last",
+                                "refId": "B",
+                                "type": "reduce"
+                            }
+                        },
+                        {
+                            "refId": "C",
+                            "relativeTimeRange": {
+                                "from": 0,
+                                "to": 0
+                            },
+                            "datasourceUid": "__expr__",
+                            "model": {
+                                "conditions": [
+                                    {
+                                        "evaluator": {
+                                            "params": [
+                                                1
+                                            ],
+                                            "type": "lt"
+                                        },
+                                        "operator": {
+                                            "type": "and"
+                                        },
+                                        "query": {
+                                            "params": [
+                                                "C"
+                                            ]
+                                        },
+                                        "reducer": {
+                                            "params": [],
+                                            "type": "last"
+                                        },
+                                        "type": "query"
+                                    }
+                                ],
+                                "datasource": {
+                                    "type": "__expr__",
+                                    "uid": "__expr__"
+                                },
+                                "expression": "B",
+                                "intervalMs": 1000,
+                                "maxDataPoints": 43200,
+                                "refId": "C",
+                                "type": "threshold"
+                            }
+                        }
+                    ],
+                    "noDataState": "NoData",
+                    "execErrState": "Error",
+                    "for": "1m",
+                    "keepFiringFor": "1m",
+                    "annotations": {
+                        "description": "The sensor 'sensor/feathers3' has stopped sending data. The last recorded count was 0 over the past 2 minutes. Please check the network connection or battery status.",
+                        "summary": "Indoor Climate: Sensor data is no longer received: 'sensor/feathers3'"
+                    },
+                    "labels": {
+                        "location": "Home",
+                        "sensor": "sensor/feathers3"
+                    },
+                    "isPaused": false,
+                    "notification_settings": {
+                        "receiver": "Google Chat \"Indoor Climate Alerting (Administration)\""
+                    }
+                },
+                {
+                    "uid": "ffcy2x4qj33lsd",
+                    "title": "Indoor Climate: CO2 ",
+                    "condition": "C",
+                    "data": [
+                        {
+                            "refId": "A",
+                            "relativeTimeRange": {
+                                "from": 120,
+                                "to": 0
+                            },
+                            "datasourceUid": "bfc0wjl07m9dsb",
+                            "model": {
+                                "dataset": "sensor_data",
+                                "editorMode": "code",
+                                "format": "table",
+                                "intervalMs": 1000,
+                                "maxDataPoints": 43200,
+                                "rawQuery": true,
+                                "rawSql": "SELECT \"time\", value AS \"co2\" FROM sensor_readings WHERE (reader = 1 AND location = 1 AND topic = 'sensors/feathers3/co2') GROUP BY \"time\" ORDER BY 1 DESC LIMIT 50 ",
+                                "refId": "A",
+                                "sql": {
+                                    "columns": [
+                                        {
+                                            "parameters": [
+                                                {
+                                                    "name": "\"time\"",
+                                                    "type": "functionParameter"
+                                                }
+                                            ],
+                                            "type": "function"
+                                        },
+                                        {
+                                            "alias": "\"co2\"",
+                                            "parameters": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "functionParameter"
+                                                }
+                                            ],
+                                            "type": "function"
+                                        }
+                                    ],
+                                    "groupBy": [
+                                        {
+                                            "property": {
+                                                "name": "\"time\"",
+                                                "type": "string"
+                                            },
+                                            "type": "groupBy"
+                                        }
+                                    ],
+                                    "limit": 50,
+                                    "whereJsonTree": {
+                                        "children1": [
+                                            {
+                                                "id": "b9a8bba8-cdef-4012-b456-719c4e105a62",
+                                                "properties": {
+                                                    "field": "reader",
+                                                    "fieldSrc": "field",
+                                                    "operator": "equal",
+                                                    "value": [
+                                                        1
+                                                    ],
+                                                    "valueError": [
+                                                        null
+                                                    ],
+                                                    "valueSrc": [
+                                                        "value"
+                                                    ],
+                                                    "valueType": [
+                                                        "number"
+                                                    ]
+                                                },
+                                                "type": "rule"
+                                            },
+                                            {
+                                                "id": "bb889889-89ab-4cde-b012-319c4e1074d0",
+                                                "properties": {
+                                                    "field": "location",
+                                                    "fieldSrc": "field",
+                                                    "operator": "equal",
+                                                    "value": [
+                                                        1
+                                                    ],
+                                                    "valueError": [
+                                                        null
+                                                    ],
+                                                    "valueSrc": [
+                                                        "value"
+                                                    ],
+                                                    "valueType": [
+                                                        "number"
+                                                    ]
+                                                },
+                                                "type": "rule"
+                                            },
+                                            {
+                                                "id": "bbbba889-4567-489a-bcde-f19c4e10881e",
+                                                "properties": {
+                                                    "field": "topic",
+                                                    "fieldSrc": "field",
+                                                    "operator": "equal",
+                                                    "value": [
+                                                        "sensors/feathers3/co2"
+                                                    ],
+                                                    "valueError": [
+                                                        null
+                                                    ],
+                                                    "valueSrc": [
+                                                        "value"
+                                                    ],
+                                                    "valueType": [
+                                                        "text"
+                                                    ]
+                                                },
+                                                "type": "rule"
+                                            }
+                                        ],
+                                        "id": "989b989a-0123-4456-b89a-b19c49b733ad",
+                                        "type": "group"
+                                    },
+                                    "whereString": "(reader = 1 AND location = 1 AND topic = 'sensors/feathers3/co2')"
+                                },
+                                "table": "sensor_readings"
+                            }
+                        },
+                        {
+                            "refId": "B",
+                            "relativeTimeRange": {
+                                "from": 0,
+                                "to": 0
+                            },
+                            "datasourceUid": "__expr__",
+                            "model": {
+                                "conditions": [
+                                    {
+                                        "evaluator": {
+                                            "params": [],
+                                            "type": "gt"
+                                        },
+                                        "operator": {
+                                            "type": "and"
+                                        },
+                                        "query": {
+                                            "params": [
+                                                "B"
+                                            ]
+                                        },
+                                        "reducer": {
+                                            "params": [],
+                                            "type": "last"
+                                        },
+                                        "type": "query"
+                                    }
+                                ],
+                                "datasource": {
+                                    "type": "__expr__",
+                                    "uid": "__expr__"
+                                },
+                                "expression": "A",
+                                "intervalMs": 1000,
+                                "maxDataPoints": 43200,
+                                "reducer": "last",
+                                "refId": "B",
+                                "type": "reduce"
+                            }
+                        },
+                        {
+                            "refId": "C",
+                            "relativeTimeRange": {
+                                "from": 0,
+                                "to": 0
+                            },
+                            "datasourceUid": "__expr__",
+                            "model": {
+                                "conditions": [
+                                    {
+                                        "evaluator": {
+                                            "params": [
+                                                1000
+                                            ],
+                                            "type": "gt"
+                                        },
+                                        "operator": {
+                                            "type": "and"
+                                        },
+                                        "query": {
+                                            "params": [
+                                                "C"
+                                            ]
+                                        },
+                                        "reducer": {
+                                            "params": [],
+                                            "type": "last"
+                                        },
+                                        "type": "query"
+                                    }
+                                ],
+                                "datasource": {
+                                    "type": "__expr__",
+                                    "uid": "__expr__"
+                                },
+                                "expression": "B",
+                                "intervalMs": 1000,
+                                "maxDataPoints": 43200,
+                                "refId": "C",
+                                "type": "threshold"
+                            }
+                        }
+                    ],
+                    "noDataState": "NoData",
+                    "execErrState": "Error",
+                    "for": "1m",
+                    "keepFiringFor": "1m",
+                    "annotations": {
+                        "description": "The sensor 'sensor/feathers3/co2' latest value was above 1000 ppm. Open a window in order to lower the ppm.",
+                        "summary": "Indoor Climate: CO2 Sensor is above 1000 ppm"
+                    },
+                    "labels": {
+                        "location": "Home",
+                        "sensor": "sensor/feathers3"
+                    },
+                    "isPaused": false,
+                    "notification_settings": {
+                        "receiver": "Google Chat \"Indoor Climate Alarming\""
+                    }
+                },
+                {
+                    "uid": "bfcy67gyvr37ka",
+                    "title": "Indoor Climate: Humidity",
+                    "condition": "C",
+                    "data": [
+                        {
+                            "refId": "A",
+                            "relativeTimeRange": {
+                                "from": 120,
+                                "to": 0
+                            },
+                            "datasourceUid": "bfc0wjl07m9dsb",
+                            "model": {
+                                "dataset": "sensor_data",
+                                "editorMode": "code",
+                                "format": "table",
+                                "intervalMs": 1000,
+                                "maxDataPoints": 43200,
+                                "rawQuery": true,
+                                "rawSql": "SELECT \"time\", value AS \"humidity\" FROM sensor_readings WHERE (reader = 1 AND location = 1 AND topic = 'sensors/feathers3/humidity') GROUP BY \"time\" ORDER BY 1 DESC LIMIT 50 ",
+                                "refId": "A",
+                                "sql": {
+                                    "columns": [
+                                        {
+                                            "parameters": [
+                                                {
+                                                    "name": "\"time\"",
+                                                    "type": "functionParameter"
+                                                }
+                                            ],
+                                            "type": "function"
+                                        },
+                                        {
+                                            "alias": "\"co2\"",
+                                            "parameters": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "functionParameter"
+                                                }
+                                            ],
+                                            "type": "function"
+                                        }
+                                    ],
+                                    "groupBy": [
+                                        {
+                                            "property": {
+                                                "name": "\"time\"",
+                                                "type": "string"
+                                            },
+                                            "type": "groupBy"
+                                        }
+                                    ],
+                                    "limit": 50,
+                                    "whereJsonTree": {
+                                        "children1": [
+                                            {
+                                                "id": "b9a8bba8-cdef-4012-b456-719c4e105a62",
+                                                "properties": {
+                                                    "field": "reader",
+                                                    "fieldSrc": "field",
+                                                    "operator": "equal",
+                                                    "value": [
+                                                        1
+                                                    ],
+                                                    "valueError": [
+                                                        null
+                                                    ],
+                                                    "valueSrc": [
+                                                        "value"
+                                                    ],
+                                                    "valueType": [
+                                                        "number"
+                                                    ]
+                                                },
+                                                "type": "rule"
+                                            },
+                                            {
+                                                "id": "bb889889-89ab-4cde-b012-319c4e1074d0",
+                                                "properties": {
+                                                    "field": "location",
+                                                    "fieldSrc": "field",
+                                                    "operator": "equal",
+                                                    "value": [
+                                                        1
+                                                    ],
+                                                    "valueError": [
+                                                        null
+                                                    ],
+                                                    "valueSrc": [
+                                                        "value"
+                                                    ],
+                                                    "valueType": [
+                                                        "number"
+                                                    ]
+                                                },
+                                                "type": "rule"
+                                            },
+                                            {
+                                                "id": "bbbba889-4567-489a-bcde-f19c4e10881e",
+                                                "properties": {
+                                                    "field": "topic",
+                                                    "fieldSrc": "field",
+                                                    "operator": "equal",
+                                                    "value": [
+                                                        "sensors/feathers3/co2"
+                                                    ],
+                                                    "valueError": [
+                                                        null
+                                                    ],
+                                                    "valueSrc": [
+                                                        "value"
+                                                    ],
+                                                    "valueType": [
+                                                        "text"
+                                                    ]
+                                                },
+                                                "type": "rule"
+                                            }
+                                        ],
+                                        "id": "989b989a-0123-4456-b89a-b19c49b733ad",
+                                        "type": "group"
+                                    },
+                                    "whereString": "(reader = 1 AND location = 1 AND topic = 'sensors/feathers3/co2')"
+                                },
+                                "table": "sensor_readings"
+                            }
+                        },
+                        {
+                            "refId": "B",
+                            "relativeTimeRange": {
+                                "from": 0,
+                                "to": 0
+                            },
+                            "datasourceUid": "__expr__",
+                            "model": {
+                                "conditions": [
+                                    {
+                                        "evaluator": {
+                                            "params": [],
+                                            "type": "gt"
+                                        },
+                                        "operator": {
+                                            "type": "and"
+                                        },
+                                        "query": {
+                                            "params": [
+                                                "B"
+                                            ]
+                                        },
+                                        "reducer": {
+                                            "params": [],
+                                            "type": "last"
+                                        },
+                                        "type": "query"
+                                    }
+                                ],
+                                "datasource": {
+                                    "type": "__expr__",
+                                    "uid": "__expr__"
+                                },
+                                "expression": "A",
+                                "intervalMs": 1000,
+                                "maxDataPoints": 43200,
+                                "reducer": "last",
+                                "refId": "B",
+                                "type": "reduce"
+                            }
+                        },
+                        {
+                            "refId": "C",
+                            "relativeTimeRange": {
+                                "from": 0,
+                                "to": 0
+                            },
+                            "datasourceUid": "__expr__",
+                            "model": {
+                                "conditions": [
+                                    {
+                                        "evaluator": {
+                                            "params": [
+                                                50
+                                            ],
+                                            "type": "gt"
+                                        },
+                                        "operator": {
+                                            "type": "and"
+                                        },
+                                        "query": {
+                                            "params": [
+                                                "C"
+                                            ]
+                                        },
+                                        "reducer": {
+                                            "params": [],
+                                            "type": "last"
+                                        },
+                                        "type": "query"
+                                    }
+                                ],
+                                "datasource": {
+                                    "type": "__expr__",
+                                    "uid": "__expr__"
+                                },
+                                "expression": "B",
+                                "intervalMs": 1000,
+                                "maxDataPoints": 43200,
+                                "refId": "C",
+                                "type": "threshold"
+                            }
+                        }
+                    ],
+                    "noDataState": "NoData",
+                    "execErrState": "Error",
+                    "for": "1m",
+                    "keepFiringFor": "1m",
+                    "annotations": {
+                        "description": "The sensor 'sensor/feathers3/humidity' latest value is above 50%. Open a window in order to lower the ppm.",
+                        "summary": "Indoor Climate: Humidity Sensor is above 50%"
+                    },
+                    "labels": {
+                        "location": "Home",
+                        "sensor": "sensor/feathers3"
+                    },
+                    "isPaused": false,
+                    "notification_settings": {
+                        "receiver": "Google Chat \"Indoor Climate Alarming\""
+                    }
+                }
+            ]
+        }
+    ]
+}

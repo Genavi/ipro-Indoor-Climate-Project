@@ -2,9 +2,9 @@
   "apiVersion": "dashboard.grafana.app/v2beta1",
   "kind": "Dashboard",
   "metadata": {
-    "name": "adfm5wd",
-    "generation": 3,
-    "creationTimestamp": "2026-01-23T21:45:30Z",
+    "name": "admbx2m",
+    "generation": 7,
+    "creationTimestamp": "2026-02-02T12:27:47Z",
     "labels": {},
     "annotations": {}
   },
@@ -21,7 +21,12 @@
           "query": {
             "group": "grafana",
             "kind": "DataQuery",
-            "spec": {},
+            "spec": {
+              "limit": 100,
+              "matchAny": false,
+              "tags": [],
+              "type": "dashboard"
+            },
             "version": "v0"
           }
         }
@@ -49,7 +54,7 @@
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  unit,\n  value as \"Celcius\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'temperature' AND\n  unit = '°F'\nORDER BY \"time\" DESC\nLIMIT 1",
+                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  unit,\n  value as \"Celcius\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  location IN ($location_query) AND\n  sensor_type = 'temperature' AND\n  unit = '°F'\nORDER BY \"time\" DESC\nLIMIT 1",
                         "sql": {
                           "columns": [
                             {
@@ -134,7 +139,7 @@
                 "sizing": "auto"
               }
             },
-            "version": "12.3.1"
+            "version": "12.3.2"
           }
         }
       },
@@ -157,7 +162,7 @@
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  avg(value) as \"CO2\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'co2'\nGROUP BY 1, 2\nORDER BY 1",
+                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  avg(value) as \"CO2\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  location IN ($location_query) AND\n  sensor_type = 'co2'\nGROUP BY 1, 2\nORDER BY 1",
                         "sql": {
                           "columns": [
                             {
@@ -280,7 +285,7 @@
                 }
               }
             },
-            "version": "12.3.1"
+            "version": "12.3.2"
           }
         }
       },
@@ -303,7 +308,7 @@
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  avg(value) as \"Humidity\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'humidity'\nGROUP BY 1, 2\nORDER BY 1",
+                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  avg(value) as \"Humidity\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  location IN ($location_query) AND\n  sensor_type = 'humidity'\nGROUP BY 1, 2\nORDER BY 1",
                         "sql": {
                           "columns": [
                             {
@@ -419,7 +424,7 @@
                 }
               }
             },
-            "version": "12.3.1"
+            "version": "12.3.2"
           }
         }
       },
@@ -442,7 +447,7 @@
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  unit,\n  avg(value) as \"Temperature\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'temperature' AND\n  unit = '°C'\nGROUP BY 1, 2, 3\nORDER BY 1",
+                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  unit,\n  avg(value) as \"Temperature\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  location IN ($location_query) AND\n  sensor_type = 'temperature' AND\n  unit = '°C'\nGROUP BY 1, 2, 3\nORDER BY 1",
                         "sql": {
                           "columns": [
                             {
@@ -554,7 +559,7 @@
                 }
               }
             },
-            "version": "12.3.1"
+            "version": "12.3.2"
           }
         }
       },
@@ -577,7 +582,7 @@
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  unit,\n  avg(value) as \"Temperature\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'temperature' AND\n  unit = '°F'\nGROUP BY 1, 2, 3\nORDER BY 1",
+                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  unit,\n  avg(value) as \"Temperature\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  location IN ($location_query) AND\n  sensor_type = 'temperature' AND\n  unit = '°F'\nGROUP BY 1, 2, 3\nORDER BY 1",
                         "sql": {
                           "columns": [
                             {
@@ -689,7 +694,7 @@
                 }
               }
             },
-            "version": "12.3.1"
+            "version": "12.3.2"
           }
         }
       },
@@ -712,7 +717,7 @@
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  value as \"Humidity\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'humidity'\nORDER BY \"time\" DESC\nLIMIT 1",
+                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  value as \"Humidity\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  location IN ($location_query) AND\n  sensor_type = 'humidity'\nORDER BY \"time\" DESC\nLIMIT 1",
                         "sql": {
                           "columns": [
                             {
@@ -801,7 +806,7 @@
                 "sizing": "auto"
               }
             },
-            "version": "12.3.1"
+            "version": "12.3.2"
           }
         }
       },
@@ -824,7 +829,7 @@
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  value as \"CO2\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'co2'\nORDER BY \"time\" DESC\nLIMIT 1",
+                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  value as \"CO2\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  location IN ($location_query) AND\n  sensor_type = 'co2'\nORDER BY \"time\" DESC\nLIMIT 1",
                         "sql": {
                           "columns": [
                             {
@@ -912,7 +917,7 @@
                 "sizing": "auto"
               }
             },
-            "version": "12.3.1"
+            "version": "12.3.2"
           }
         }
       },
@@ -935,7 +940,7 @@
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  unit,\n  value as \"Celcius\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  sensor_type = 'temperature' AND\n  unit = '°C'\nORDER BY \"time\" DESC\nLIMIT 1",
+                        "rawSql": "SELECT\n  time_bucket('10s', \"time\") AS \"time\",\n  sensor_type,\n  unit,\n  value as \"Celcius\"\nFROM sensor_readings\nWHERE\n  $__timeFilter(\"time\") AND \n  reader IN ($reader_query) AND\n  location IN ($location_query) AND\n  sensor_type = 'temperature' AND\n  unit = '°C'\nORDER BY \"time\" DESC\nLIMIT 1",
                         "sql": {
                           "columns": [
                             {
@@ -1020,7 +1025,7 @@
                 "sizing": "auto"
               }
             },
-            "version": "12.3.1"
+            "version": "12.3.2"
           }
         }
       }
@@ -1136,7 +1141,20 @@
         ]
       }
     },
-    "links": [],
+    "links": [
+      {
+        "asDropdown": true,
+        "icon": "external link",
+        "includeVars": false,
+        "keepTime": false,
+        "tags": [],
+        "targetBlank": false,
+        "title": "Dashboards",
+        "tooltip": "",
+        "type": "dashboards",
+        "url": ""
+      }
+    ],
     "liveNow": false,
     "preload": false,
     "tags": [],
@@ -1182,6 +1200,35 @@
             "kind": "DataQuery",
             "spec": {
               "__legacyStringValue": "SELECT name AS __text, id AS __value FROM readers ORDER BY name;"
+            },
+            "version": "v0"
+          },
+          "refresh": "onDashboardLoad",
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": "alphabeticalAsc"
+        }
+      },
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "allowCustomValue": true,
+          "current": {
+            "text": "",
+            "value": ""
+          },
+          "definition": "SELECT name AS __text, id AS __value FROM locations ORDER BY name;",
+          "hide": "dontHide",
+          "includeAll": false,
+          "label": "Location",
+          "multi": false,
+          "name": "location_query",
+          "options": [],
+          "query": {
+            "group": "grafana-postgresql-datasource",
+            "kind": "DataQuery",
+            "spec": {
+              "__legacyStringValue": "SELECT name AS __text, id AS __value FROM locations ORDER BY name;"
             },
             "version": "v0"
           },
