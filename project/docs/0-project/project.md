@@ -11,20 +11,30 @@ gantt
     Level 1 :done, t03, after t02, 4d
     Research available Sensors :done, t03, after t02, 4d
     Research available Microcontroller :done, t03, after t02, 4d
-    Working on project : active, t2, 2026-01-19, 5d
+    Working on project : done, t2, 2026-01-19, 5d
     Level 3 :done, t04, 2026-01-19, 5d
     Learning Telegraf : done, t05, 2026-01-19, 2d
-    Setup Cloud Solution : active, t06, after t05, 2d
+    Setup Cloud Solution : t06, after t05, 2d
     Setup Networking: done, t07, after t05, 2d
     Setup MQTT Broker : done, t08, after t05, 2d
     Setup Telegraf data ingestion : done, t07, after t05, 2d
-    Ingestion from FeatherS3 to InfluxDB : active, t08, after t05, 2d
+    Ingestion from FeatherS3 to InfluxDB : done, t08, after t05, 2d
     Update Grafana Dashboard : done, t09, after t07, 1d
-    Unit Testing and Documentation : active, t10, after t08, 1d
-    Feedback-Markt : milestone, t3, 2026-01-26, 0d
-    Working on project : t4, 2026-01-26, 5d
-    Working on project : t4, 2026-02-02, 5d
-    Working on project : t4, 2026-02-09, 5d
+    Unit Testing and Documentation : t10, after t08, 1d
+    Feedback-Markt : milestone, done, t11, 2026-01-26, 0d
+    Working on project : done, t12, 2026-01-26, 5d
+    Reflect Feedback Markt : done, t13, after t11, 2d
+    Setup GitHub Education Pack : done, t14, after t11, 1d
+    Setup Cloud Solution : done, t15, after t14, 2d
+    Working on project : done, t16, 2026-02-02, 5d
+    Healthcheck Alerting : done, t17, 2026-02-02, 1d
+    Threshold Alerting : done, t18, 2026-02-04, 1d
+    Update Documentation : t19, after t18, 1d
+    Working on project : t20, 2026-02-09, 5d
+    Add aditional datasources: t21, 2026-02-09, 2d
+    Add Window Sensor: t22, after t21, 2d
+    Plan part two features: t23, after t22, 1d
+    Finalize documentation and README : t24, after t22, 1d
     Interim submission : milestone, t7, 2026-02-14, 0d
 ```
 
@@ -57,6 +67,55 @@ gantt
 
 # Project Log
 
+## Week of 09 February 2026
+
+### Tasks:
+- Project
+    - [x]  Finalize project and prepare for interim submission
+    - [ ]  Write final documentation and update README
+    - [ ]  Plan additional features for part two of the project
+    - [ ]  Add additional datasources to the Grafana dashboard (e.g., weather data, container metrics)
+    - [ ]  Add an additional sensor for the Window state (open/closed) and display it on the dashboard
+
+## Week of 02 February 2026
+
+### Tasks:
+- Project
+    - [x]  Add threshold alerting to the Grafana dashboard for when certain thresholds are exceeded (e.g., CO2 levels too high)
+    - [x]  Add healthcheck alerting to the Grafana dashboard to monitor the status of the FeatherS3 connection
+    - [ ]  Update documentation with new Grafana dashboard features and alerting setup
+
+### 04 February 2026
+> Added threshold alerting to the Grafana dashboard for when thresholds are exceeded for CO2 levels and Humidity. The alerts trigger when the CO2 levels exceed 1000 ppm or the Humidity levels exceed 50%H. This is a common threshold for indoor air quality, where levels above 1000 ppm can indicate poor ventilation and potential health issues.
+> Setup another Google Chat room "Indoor Climate Alerting" and added a webhook integration to receive the Grafana alerts in the chat room. This way I know immediately when I have to do a proper "stosslüften" in order to lower the CO2 and Humidity levels.
+
+### 02 February 2026
+> Added alerting for the healthcheck, I set up an alert that triggers when no new data is received from the FeatherS3 for than 1 minute (should usually send data every five seconds).
+> Setup Google Chat room "Indoor Climate Alerting (Administration)" and added a webhook integration to receive the Grafana alerts in the chat room. This way I can react fast when there is an issue with the data collection.
+
+## Week of 26 January 2026
+
+### Tasks:
+- Project
+    - [x]  Continue working on project based on feedback from feedback market
+    - [x]  Setup GitHub Education Pack for free cloud hosting credits
+    - [x]  Research and plan cloud deployment as a DigitalOcean Droplet
+    - [x]  Implement cloud deployment using Docker Compose on DigitalOcean Droplet
+    - [x]  Update documentation with cloud deployment instructions
+
+### 27 January 2026
+> Set up a DigitalOcean account and claimed the $200 credit for students from the GitHub Education Pack. I will use this credit to host my application in the cloud for free during the development phase and potentially even after the project is completed if the credit lasts long enough.
+> Started researching how to deploy my application using Docker Compose on a DigitalOcean Droplet. I documented how I creates and configures a Droplet for hosting the production environment in [DigitalOcean Setup](../digitalocean-setup.md). After setting up the Droplet, I deployed my application using Docker Compose.
+> For the environment variables, I first tried to exchange the `.env` with [Docker Secrets](https://docs.docker.com/engine/swarm/secrets/) but hat to switch back, because I kept getting into problems, where the docker containers could not properly read the secrets. So I went back and used the same `.env` file that I use for local development and uploaded it to the Droplet.
+
+### 26 January 2026
+> Feedback market went well. Got some good feedback on the project and some ideas for improvement. I will continue working on the project based on the feedback and try to implement some of the suggested improvements.
+> - Idea: Add alerting to the Grafana dashboard for when certain thresholds are exceeded (e.g., CO2 levels too high).
+> - Idea: Add more sensors and display their data on the dashboard (e.g., Window sensors).
+> - Idea: Implement a mobile app for remote monitoring of the indoor climate data.
+> - Idea: Add external data sources like weather data to the dashboard for correlation analysis.
+> - Idea: Add container data to the dashboard to monitor the status of the Docker containers (e.g., CPU and memory usage).
+
 ## Week of 19 January 2026
 
 ### Tasks:
@@ -72,9 +131,13 @@ gantt
     - [x]  Set up secure networking with Tailscale
     - [x]  Set up Mosquitto MQTT Broker
     - [x]  Set up Telegraf to read data from FeatherS3 via MQTT/~~SNMP/HTTP~~
-    - [ ]  Implement data ingestion from FeatherS3 to TimescaleDB
+    - [x]  Implement data ingestion from FeatherS3 to TimescaleDB
     - [x]  Update Grafana dashboard to include FeatherS3 data
     - [ ]  Create unit tests for data ingestion and visualization components
+
+### 25 January 2026
+> Made sure to have a local running solution, in order to properly present the project in the feedback market on Monday, even though my Oracle Cloud Free Tier account is still pending approval. I can easily migrate the solution to the cloud later on when the account is approved.
+> For the Data ingestion from FeatherS3 to TimescaleDB, I decided to use MQTT as the communication protocol between FeatherS3 and Telegraf. Unfortunately, I had to find out that my plan, to connect the FeatherS3 directly to Telegraf is not possible. As a workaround for now and for the presentation I decided to connect the FeatherS3 to my Raspberry Pi and set up Tailscale on the Raspberry Pi to read the data from the serial USB port and send it to the MQTT broker running in Docker on my Macbook. The Raspberry Pi will be connected to my Hotspot network, so that it can communicate with the MQTT broker.
 
 ### 23 January 2026
 > The Oracle Cloud Free Tier account is still in the process of being approved. So for now I will continue developing and testing the project locally using Docker Compose.

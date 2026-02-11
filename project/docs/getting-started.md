@@ -43,6 +43,17 @@ Ensure you have the following installed on your system:
 
     Update the `docker-compose.override.yml` file in the `project/` directory if you need to customize the Postgres or Grafana settings. You can use the provided example file `/project/docker-compose.override.yml.example` as a template. Database credentials are set via environment variables.
 
+## Running the Production Environment
+
+1. **DigitalOcean Setup** Droplet creation:
+    Follow the instructions in the [DigitalOcean Setup](digitalocean-setup.md) to create and configure a Droplet for hosting the production environment.
+
+2. **Deploy the Application**:
+    Follow the deployment instructions in the [Deployment Guide](deployment.md) to deploy the application to your DigitalOcean Droplet.
+
+3. **Access the Application**:
+    Once deployed, you can access the application via the Droplet's public IP address or domain name.
+
 ## Running the Development Environment
 
 1. **Colima setup** (only if you use Colima as Docker backend):
