@@ -7,7 +7,7 @@ services:
     environment:
       - TS_AUTHKEY=${TAILSCALE_AUTH_KEY}
       - TS_ACCEPT_DNS=false
-      - TS_HOSTNAME=iot-gateway-local
+      - TS_HOSTNAME=iot-gateway
       - TS_STATE_DIR=/var/lib/tailscale
     volumes:
       - tailscale_data:/var/lib/tailscale
