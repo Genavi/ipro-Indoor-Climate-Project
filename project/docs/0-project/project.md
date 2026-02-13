@@ -71,11 +71,14 @@ gantt
 
 ### Tasks:
 - Project
-    - [x]  Finalize project and prepare for interim submission
-    - [ ]  Write final documentation and update README
-    - [ ]  Plan additional features for part two of the project
-    - [ ]  Add additional datasources to the Grafana dashboard (e.g., weather data, container metrics)
-    - [ ]  Add an additional sensor for the Window state (open/closed) and display it on the dashboard
+    - [ ]  Finalize project and prepare for interim submission
+    - [x]  Plan additional features for part two of the project
+    - [ ]  Add docker container datasource to Grafana dashboard (e.g., container metrics)
+    - [ ]  ~~Add additional datasources to the Grafana dashboard (e.g., weather data, container metrics)~~ // feature for part two
+    - [ ]  ~~Add an additional sensor for the Window state (open/closed) and display it on the dashboard~~ // feature for part two
+
+## 012 February 2026
+> Planned possible features for part two of the project in the [plan-part-two.md](plan-part-two.md) document. These features include adding additional datasources to the Grafana dashboard, adding an additional sensor for the Window state, implementing threshold alerting in Grafana, and implementing healthcheck alerting for the FeatherS3 connection. I will prioritize these features based on user feedback and the overall goals of the project.
 
 ## Week of 02 February 2026
 
@@ -83,7 +86,7 @@ gantt
 - Project
     - [x]  Add threshold alerting to the Grafana dashboard for when certain thresholds are exceeded (e.g., CO2 levels too high)
     - [x]  Add healthcheck alerting to the Grafana dashboard to monitor the status of the FeatherS3 connection
-    - [ ]  Update documentation with new Grafana dashboard features and alerting setup
+    - [ ]  ~~Update documentation with new Grafana dashboard features and alerting setup~~
 
 ### 04 February 2026
 > Added threshold alerting to the Grafana dashboard for when thresholds are exceeded for CO2 levels and Humidity. The alerts trigger when the CO2 levels exceed 1000 ppm or the Humidity levels exceed 50%H. This is a common threshold for indoor air quality, where levels above 1000 ppm can indicate poor ventilation and potential health issues.
