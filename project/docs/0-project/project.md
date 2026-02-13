@@ -30,12 +30,11 @@ gantt
     Healthcheck Alerting : done, t17, 2026-02-02, 1d
     Threshold Alerting : done, t18, 2026-02-04, 1d
     Update Documentation : t19, after t18, 1d
-    Working on project : t20, 2026-02-09, 5d
-    Add aditional datasources: t21, 2026-02-09, 2d
-    Add Window Sensor: t22, after t21, 2d
-    Plan part two features: t23, after t22, 1d
-    Finalize documentation and README : t24, after t22, 1d
-    Interim submission : milestone, t7, 2026-02-14, 0d
+    Working on project : done, t20, 2026-02-09, 5d
+    Plan part two features: done, t23, 2026-02-12, 1d
+    Add Docker datasources: done, t21, 2026-02-13, 1d
+    Finalize documentation and README : done, t24, 2026-02-13, 1d
+    Interim submission : done, milestone, t7, 2026-02-14, 0d
 ```
 
 ### Part Two
@@ -67,17 +66,52 @@ gantt
 
 # Project Log
 
+## Current State
+### Overview
+The Indoor Climate Project is an IoT application designed to monitor and visualize indoor climate conditions using various sensors and a microcontroller. The project consists of several components, including hardware for data collection, a cloud solution for data storage and visualization, and secure networking for communication between the components. The main features of the project include:
+- Real-time monitoring of indoor climate conditions (temperature, humidity, CO2 levels) using FeatherS3 sensors.
+- Data storage in a TimescaleDB database hosted on a DigitalOcean Droplet.
+- Visualization of the sensor data using Grafana dashboards.
+- Visualization of Docker Container metrics on the Grafana dashboard.
+- Alerting from Grafana to Google Chat for threshold breaches and healthcheck monitoring.
+
+### Sensors
+- FeatherS3 (Adafruit Feather S3) with sensor for measuring temperature, humidity, CO2 levels.
+
+### Microcontroller
+- FeatherS3 (Adafruit Feather S3) as the main microcontroller to read data from the sensors and send it to the database.
+- Raspberry Pi 3 B+ as a gateway device to read data from the FeatherS3 and send it to the MQTT broker.
+
+### Cloud Solution
+- DigitalOcean Droplet for hosting the production environment, including the database and Grafana dashboard.
+
+### Database and Visualization
+- TimescaleDB for storing the sensor data.
+- Grafana for visualizing the sensor data and creating dashboards.
+- Telegraf for collecting data from the MQTT broker and sending it to TimescaleDB.
+- Mosquitto MQTT Broker for receiving data from the FeatherS3 and allowing Telegraf to consume it.
+- Tailscale for secure networking and remote access to the application.
+
+
+
 ## Week of 09 February 2026
 
 ### Tasks:
 - Project
-    - [ ]  Finalize project and prepare for interim submission
+    - [x]  Finalize project and prepare for interim submission
     - [x]  Plan additional features for part two of the project
-    - [ ]  Add docker container datasource to Grafana dashboard (e.g., container metrics)
+    - [x]  Add docker container datasource to Grafana dashboard (e.g., container metrics)
     - [ ]  ~~Add additional datasources to the Grafana dashboard (e.g., weather data, container metrics)~~ // feature for part two
     - [ ]  ~~Add an additional sensor for the Window state (open/closed) and display it on the dashboard~~ // feature for part two
 
-## 012 February 2026
+### 013 February 2026
+> Was able to use Telegraf plugin to collect Docker container metrics and display them on the Grafana dashboard. This allows me to monitor the performance and resource usage of the Docker containers running the application, which can be useful for troubleshooting and optimizing the application as it scales.
+
+> Added deployment instructions for the production environment in the [Deployment Guide](deployment.md) and updated the [Getting Started Guide](getting-started.md) with instructions for setting up the development environment and running the application locally using Docker Compose.
+
+> Setup an automation script on Raspberry Pi to start reading as soon as the Raspberry Pi boots up is connected the the Home Wifi network. This way I can ensure that the data collection from the FeatherS3 sensor starts automatically without needing to manually start the script every time.
+
+### 012 February 2026
 > Planned possible features for part two of the project in the [plan-part-two.md](plan-part-two.md) document. These features include adding additional datasources to the Grafana dashboard, adding an additional sensor for the Window state, implementing threshold alerting in Grafana, and implementing healthcheck alerting for the FeatherS3 connection. I will prioritize these features based on user feedback and the overall goals of the project.
 
 ## Week of 02 February 2026

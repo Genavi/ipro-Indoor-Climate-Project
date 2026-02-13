@@ -1,7 +1,21 @@
 # Getting Started
 This section provides instructions to set up the development environment for the Indoor Climate Project. Focus on Linux and macOS systems. Windows users may need to adapt some commands accordingly.
 
-## Prerequisites
+## Running the Production Environment
+
+1. **DigitalOcean Setup** Droplet creation:
+    Follow the instructions in the [DigitalOcean Setup](digitalocean-setup.md) to create and configure a Droplet for hosting the production environment.
+
+2. **Deploy the Application**:
+    Follow the deployment instructions in the [Deployment Guide](deployment.md) to deploy the application to your DigitalOcean Droplet.
+
+3. **Access the Application**:
+    Once deployed, you can access the application via the Droplet's public IP address or domain name.
+
+## Setting Up the Development Environment
+
+
+### Prerequisites
 
 Ensure you have the following installed on your system:
 - git
@@ -10,7 +24,8 @@ Ensure you have the following installed on your system:
 - virtualenv (optional but recommended)
 - Docker and Docker Compose (or Colima for macOS users)
 
-## Setting Up the Development Environment
+### Setup Instructions
+
 1. **Create a Virtual Environment** (optional but recommended):
 
     ```console
@@ -42,17 +57,6 @@ Ensure you have the following installed on your system:
 5. **Update Docker Configuration** (optional):
 
     Update the `docker-compose.override.yml` file in the `project/` directory if you need to customize the Postgres or Grafana settings. You can use the provided example file `/project/docker-compose.override.yml.example` as a template. Database credentials are set via environment variables.
-
-## Running the Production Environment
-
-1. **DigitalOcean Setup** Droplet creation:
-    Follow the instructions in the [DigitalOcean Setup](digitalocean-setup.md) to create and configure a Droplet for hosting the production environment.
-
-2. **Deploy the Application**:
-    Follow the deployment instructions in the [Deployment Guide](deployment.md) to deploy the application to your DigitalOcean Droplet.
-
-3. **Access the Application**:
-    Once deployed, you can access the application via the Droplet's public IP address or domain name.
 
 ## Running the Development Environment
 
