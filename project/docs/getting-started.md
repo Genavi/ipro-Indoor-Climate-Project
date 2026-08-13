@@ -1,6 +1,16 @@
 # Getting Started
 This section provides instructions to set up the development environment for the Indoor Climate Project. Focus on Linux and macOS systems. Windows users may need to adapt some commands accordingly.
 
+## Quicklinks
+- [DigitalOcean](https://cloud.digitalocean.com/droplets/548750859)
+- Remote Access
+    - Droplet: `ssh -i /Users/davidringgenberg/.ssh/id_ed25519_digitalocean_indoorclimate 'root@159.89.5.63'`
+- [Grafana Dashboard](https://iot-gateway.tail7a645b.ts.net/)
+- [Raspberry Pi Connect](https://connect.raspberrypi.com/)
+- Sensors
+    - [SCD40](https://sensirion.com/products/catalog/SCD40)
+
+
 ## Running the Production Environment
 
 1. **DigitalOcean Setup** Droplet creation:
