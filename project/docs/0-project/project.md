@@ -42,14 +42,17 @@ gantt
 gantt
     dateFormat YYYY-MM-DD
     excludes weekends
-    Unfreeze Project : milestone, t0, 2026-08-10, 0d
+    Unfreeze Project :done, milestone, t0, 2026-08-10, 0d
     Working on project : t01, 2026-08-10, 5d
-    Working on project : t2, 2026-08-17, 5d
-    Feedback-Markt : milestone, t3, 2026-08-17, 0d
-    Working on project : t4, 2026-08-24, 5d
-    Working on project : t4, 2026-08-31, 5d
-    Working on project : t4, 2026-09-07, 1d
-    Interim submission : milestone, t7, 2026-09-08, 0d
+    Improve data connection :done, t02, 2026-08-10, 3d
+    Add add. sensors : t03, 2026-08-13, 2d
+    Working on project : t04, 2026-08-17, 5d
+    Add add. datasources : t05, 2026-08-17, 5d
+    Feedback-Markt : milestone, t6, 2026-08-17, 0d
+    Working on project : t07, 2026-08-24, 5d
+    Working on project : t08, 2026-08-31, 5d
+    Working on project : t09, 2026-09-07, 1d
+    Interim submission : milestone, t10, 2026-09-08, 0d
 ```
 
 ## Project Levels
@@ -66,7 +69,121 @@ gantt
 
 # Project Log
 
-## Current State
+## Week of 10 August 2026
+
+### Tasks:
+- Project
+    - [x]  Plan additional features for part two of the project
+    - [x]  Improve data connection on Raspberry Pi and FeatherS3 devices to ensure reliable data transmission to the MQTT broker
+    - [ ]  Add additional datasources to the Grafana dashboard (e.g., weather data, container metrics)
+    - [ ]  Add an additional sensor for the Window state (open/closed) and display it on the dashboard
+
+### 13 August 2026
+
+### 12 August 2026
+> I found that the MQTT client is failing to connect, because it can't resolve the hostname `iot-gateway`. The error `socket.gaierror: [Errno -2] Name or service not known` showed me the DNS lookup failed because the Raspberry Pi was not connected to the Tailscale network. I created an additional systemd service that starts Tailscale on boot. This way, the Raspberry Pi will automatically connect to the Tailscale network when it boots up, ensuring that the MQTT client can resolve the hostname and connect to the broker. To keep the Auth Key secure and easy to maintain, I created a file `/etc/tailscale/authkey` and added the Auth Key to that file. The systemd service reads the Auth Key from that file when starting Tailscale. I use the `--reset` tag to ensure that the Tailscale connection is reset and re-established on each boot, which helps to avoid any potential issues with stale connections or cached DNS entries. I also added the `--accept-routes` tag to allow the Raspberry Pi to accept routes from other devices on the Tailscale network, which is necessary for proper communication with the MQTT broker.
+> ```bash
+> [Unit]
+> Description=Tailscale Auto Connect
+> After=network-online.target tailscaled.service
+> Wants=network-online.target
+> Requires=tailscaled.service
+> 
+> [Service]
+> Type=oneshot
+> ExecStart=/bin/sh -c 'tailscale up --authkey=$(cat /etc/tailscale/authkey) --reset --accept-routes'
+> RemainAfterExit=yes
+> 
+> [Install]
+> WantedBy=multi-user.target
+> ```
+
+### 11 August 2026
+> I started analyzing the data connection on the Raspberry Pi and FeatherS3 devices to ensure reliable data transmission to the MQTT broker. I ran into multiple problems where the connection would drop unexpectedly.
+>
+> I was using an outdated way to connect to the broker, which was causing the connection to drop. I updated the code to use Version 2 of the MQTT client library and implemented a more robust connection handling mechanism. This should help improve the reliability of the data transmission from the Raspberry Pi and FeatherS3 devices to the MQTT broker.
+
+> #### Original:
+> ```python 
+> ./src/main.py
+>
+> import os
+> import serial
+> import paho.mqtt.client as mqtt
+> from dotenv import load_dotenv
+> 
+> from src.utils.serial_reader import start_reading
+> from src.utils.database import run_migrations
+> 
+> ser = serial.Serial(os.getenv('SERIAL_PORT'), int(os.getenv('BAUDRATE')))
+> 
+> client = mqtt.Client()
+> client.username_pw_set(os.getenv('MQTT_USERNAME'), os.getenv('MQTT_PASSWORD'))
+> client.connect(os.getenv('MQTT_BROKER'), int(os.getenv('MQTT_PORT')), 60)
+> 
+> def main():
+>     load_dotenv()
+>     if os.getenv("OUTPUT_METHOD") == "database":
+>         run_migrations()
+>     start_reading(os.getenv("SERIAL_PORT"), os.getenv("BAUDRATE"), os.getenv("OUTPUT_METHOD"), client)
+> 
+> if __name__ == "__main__":
+>     main()
+> ```
+> 
+> #### Updated:
+> ```python 
+> ./src/main.py
+>
+> ...
+> + from paho.mqtt.enums import CallbackAPIVersion
+> ...
+> - client = mwtt.Client()
+> + client = mqtt.Client(CallbackAPIVersion.VERSION2)
+> ...
+> ```
+
+> Then I found out that the loading of the script causes it to crash aswell. Right now the script tries to read the serial port and connect to the MQTT broker at the very top of the file, before `load_dotenv()` has a chance to run. This is why I moved `load_dotenv()` to the very top of the file, so that the environment variables are loaded before any other code is executed.
+>
+> #### Final:
+> ```python 
+> ./src/main.py
+>
+> import os
+> import serial
+> import paho.mqtt.client as mqtt
+> from dotenv import load_dotenv
+> from paho.mqtt.enums import CallbackAPIVersion
+> 
+> from src.utils.serial_reader import start_reading
+> from src.utils.database import run_migrations
+> 
+> load_dotenv()
+> 
+> ser = serial.Serial(os.getenv('SERIAL_PORT'), int(os.getenv('BAUDRATE')))
+> 
+> client = mqtt.Client(CallbackAPIVersion.VERSION2)
+> client.username_pw_set(os.getenv('MQTT_USERNAME'), os.getenv('MQTT_PASSWORD'))
+> client.connect(os.getenv('MQTT_BROKER'), int(os.getenv('MQTT_PORT')), 60)
+> 
+> def main():
+>     if os.getenv("OUTPUT_METHOD") == "database":
+>         run_migrations()
+>     start_reading(os.getenv("SERIAL_PORT"), os.getenv("BAUDRATE"), os.getenv("OUTPUT_METHOD"), client)
+> 
+> if __name__ == "__main__":
+>     main()
+> ```
+
+### 10 August 2026
+> Started planning additional features for part two of the project. 
+>
+> I will focus on improving the data connection on the Raspberry Pi and FeatherS3 devices to ensure reliable data transmission to the MQTT broker. During the intermission, I ran into multiple problems where the connection would drop unexpectedly.
+>
+> Additionally, I explored adding additional datasources for the Grafana dashboard, such as weather data and container metrics, as well as adding an additional sensor for monitoring the window state (open/closed) and displaying it on the dashboard.
+> - MeteoSwiss ICON CH in an opend data weather forcasts from MeteoSwiss (https://open-meteo.com/en/docs/meteoswiss-api?hourly=&latitude=47.4009356&longitude=7.9712697&timezone=Europe%2FBerlin&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,weather_code) 
+
+## Final state Part One
 ### Overview
 The Indoor Climate Project is an IoT application designed to monitor and visualize indoor climate conditions using various sensors and a microcontroller. The project consists of several components, including hardware for data collection, a cloud solution for data storage and visualization, and secure networking for communication between the components. The main features of the project include:
 - Real-time monitoring of indoor climate conditions (temperature, humidity, CO2 levels) using FeatherS3 sensors.
@@ -104,14 +221,14 @@ The Indoor Climate Project is an IoT application designed to monitor and visuali
     - [ ]  ~~Add additional datasources to the Grafana dashboard (e.g., weather data, container metrics)~~ // feature for part two
     - [ ]  ~~Add an additional sensor for the Window state (open/closed) and display it on the dashboard~~ // feature for part two
 
-### 013 February 2026
+### 13 February 2026
 > Was able to use Telegraf plugin to collect Docker container metrics and display them on the Grafana dashboard. This allows me to monitor the performance and resource usage of the Docker containers running the application, which can be useful for troubleshooting and optimizing the application as it scales.
 
 > Added deployment instructions for the production environment in the [Deployment Guide](deployment.md) and updated the [Getting Started Guide](getting-started.md) with instructions for setting up the development environment and running the application locally using Docker Compose.
 
 > Setup an automation script on Raspberry Pi to start reading as soon as the Raspberry Pi boots up is connected the the Home Wifi network. This way I can ensure that the data collection from the FeatherS3 sensor starts automatically without needing to manually start the script every time.
 
-### 012 February 2026
+### 12 February 2026
 > Planned possible features for part two of the project in the [plan-part-two.md](plan-part-two.md) document. These features include adding additional datasources to the Grafana dashboard, adding an additional sensor for the Window state, implementing threshold alerting in Grafana, and implementing healthcheck alerting for the FeatherS3 connection. I will prioritize these features based on user feedback and the overall goals of the project.
 
 ## Week of 02 February 2026
