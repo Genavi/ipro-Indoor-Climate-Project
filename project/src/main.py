@@ -7,6 +7,8 @@ from paho.mqtt.enums import CallbackAPIVersion
 from src.utils.serial_reader import start_reading
 from src.utils.database import run_migrations
 
+load_dotenv()
+
 ser = serial.Serial(os.getenv('SERIAL_PORT'), int(os.getenv('BAUDRATE')))
 
 client = mqtt.Client(CallbackAPIVersion.VERSION2)
@@ -14,7 +16,6 @@ client.username_pw_set(os.getenv('MQTT_USERNAME'), os.getenv('MQTT_PASSWORD'))
 client.connect(os.getenv('MQTT_BROKER'), int(os.getenv('MQTT_PORT')), 60)
 
 def main():
-    load_dotenv()
     if os.getenv("OUTPUT_METHOD") == "database":
         run_migrations()
     start_reading(os.getenv("SERIAL_PORT"), os.getenv("BAUDRATE"), os.getenv("OUTPUT_METHOD"), client)
