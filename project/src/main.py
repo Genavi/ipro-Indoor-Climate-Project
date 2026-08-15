@@ -1,11 +1,16 @@
 import os
-import serial
-import paho.mqtt.client as mqtt
+import logging
+
 from dotenv import load_dotenv
 from paho.mqtt.enums import CallbackAPIVersion
 
 from src.utils.serial_reader import start_reading
 from src.utils.database import run_migrations
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 

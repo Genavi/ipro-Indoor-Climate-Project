@@ -1,18 +1,23 @@
 import sys
+import logging
+
 from alembic.config import Config
 from alembic import command
 from datetime import datetime, timezone
+
 from src.database.connection import SessionLocal
 from src.database.models import SensorReading
 
+logger = logging.getLogger(__name__)
+
 def run_migrations():
-    print("Checking for database updates...")
+    logger.info("Checking for database updates...")
     try:
         alembic_cfg = Config("alembic.ini")
         command.upgrade(alembic_cfg, "head")
-        print("Success: Database is at the latest version.")
+        logger.info("Success: Database is at the latest version.")
     except Exception as e:
-        print(f"Error: Migration failed: {e}")
+        logger.error(f"Migration failed: {e}")
         sys.exit(1)
 
 def save_to_database(sensor_0_name, sensor_0_value, sensor_1_name=None, sensor_1_value=None,

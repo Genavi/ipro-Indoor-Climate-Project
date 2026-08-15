@@ -1,7 +1,10 @@
 import serial
 import json
-from src.utils.database import save_to_database
+import logging
+
 from src.utils.mqtt import write_mqtt
+
+logger = logging.getLogger(__name__)
 
 def to_float(value):
     try:
@@ -10,7 +13,7 @@ def to_float(value):
         return None
 
 def start_reading(port, baudrate, output="database", client=None):
-    print(f"Reading data from serial port {port} using baudrate {baudrate}...")
+    logger.info(f"Reading data from serial port {port} using baudrate {baudrate}...")
 
     try:
         port = serial.Serial(port)
@@ -40,8 +43,8 @@ def start_reading(port, baudrate, output="database", client=None):
                     case "mqtt":
                         write_mqtt(client, json.loads(chars))
                     case _:
-                        print(f"Unknown output method: {output}")
+                        logger.warning(f"Unknown output method: {output}")
             except ValueError as e:
-                print(f"Could not parse data: {e}\nError occured during processing of line: {chars}")
+                logger.error(f"Could not parse data: {e}\nError occured during processing of line: {chars}")
     except KeyboardInterrupt:
-        print("Stopping serial reading...")
+        logger.info("Stopping serial reading...")
