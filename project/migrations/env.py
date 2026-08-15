@@ -31,7 +31,7 @@ target_metadata = Base.metadata
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
-config.set_main_option("sqlalchemy.url", f"postgresql://{os.getenv('DATABASE_USER')}:{os.getenv('DATABASE_PASSWORD')}@localhost:{os.getenv('DATABASE_PORT')}/{os.getenv('DATABASE_NAME')}")
+config.set_main_option("sqlalchemy.url", f"postgresql://{os.getenv('DATABASE_USER')}:{os.getenv('DATABASE_PASSWORD')}@{os.getenv('DATABASE_HOST', 'localhost')}:{os.getenv('DATABASE_PORT')}/{os.getenv('DATABASE_NAME')}")
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
