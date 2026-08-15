@@ -9,12 +9,12 @@ import json
 
 sensor = adafruit_scd30.SCD30(board.I2C())
 
-WIFI_SSID = "DavidsiPhone"
-WIFI_PASSWORD = "Pr@iseTheL0rd"
-MQTT_BROKER = "172.20.10.7"
+WIFI_SSID = "WIFI_SSID"
+WIFI_PASSWORD = "WIFI_PASSWORD"
+MQTT_BROKER = "BROKER_IP_OR_HOSTNAME"
 MQTT_PORT = 1883
 MQTT_USERNAME = "admin"
-MQTT_PASSWORD = "kuwpuh-6vyVcy-pybsyc"
+MQTT_PASSWORD = "MQTT_PASSWORD"
 READER_ID = 1
 LOCATION_ID = 1
 TOPIC = "sensors/feathers3"
