@@ -2,6 +2,7 @@ import serial
 import json
 import logging
 
+from src.utils.database import save_multiple_readings
 from src.utils.mqtt import write_mqtt
 
 logger = logging.getLogger(__name__)
@@ -27,19 +28,31 @@ def start_reading(port, baudrate, output="database", client=None):
                 match output:
                     case "database":
                         data = chars.split(';')
-                        save_to_database(
-                            sensor_0_name='CO2',
-                            sensor_0_value=to_float(data[0]),
-                            sensor_1_name='Humidity',
-                            sensor_1_value=to_float(data[1]) if len(data) > 1 else None,
-                            sensor_2_name='Temperature',
-                            sensor_2_value=to_float(data[2]) if len(data) > 2 else None,
-                            sensor_3_name='Celcius Temperature',
-                            sensor_3_value=to_float(data[3]) if len(data) > 3 else None,
-                            sensor_4_name='Fahrenheit Temperature',
-                            sensor_4_value=to_float(data[4]) if len(data) > 4 else None
-                        )
-                    
+                        readings = []
+
+                        if len(data) > 0 and data[0]:
+                            readings.append({
+                                'sensor_type': 'co2',
+                                'value': to_float(data[0]),
+                                'unit': 'ppm'
+                            })
+                        if len(data) > 1 and data[1]:
+                            readings.append({
+                                'sensor_type': 'humidity',
+                                'value': to_float(data[1]),
+                                'unit': '%'
+                            })
+                        if len(data) > 2 and data[2]:
+                            readings.append({
+                                'sensor_type': 'temperature',
+                                'value': to_float(data[2]),
+                                'unit': '°C'
+                            })
+
+                        valid_readings = [r for r in readings if r['value'] is not None]
+                        if valid_readings:
+                            save_multiple_readings(valid_readings)
+
                     case "mqtt":
                         write_mqtt(client, json.loads(chars))
                     case _:

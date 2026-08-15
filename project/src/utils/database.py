@@ -20,31 +20,46 @@ def run_migrations():
         logger.error(f"Migration failed: {e}")
         sys.exit(1)
 
-def save_to_database(sensor_0_name, sensor_0_value, sensor_1_name=None, sensor_1_value=None,
-                     sensor_2_name=None, sensor_2_value=None, sensor_3_name=None,
-                     sensor_3_value=None, sensor_4_name=None, sensor_4_value=None):
+def save_to_database(sensor_type, value, unit, reader=1, location=1, topic=None):
     db = SessionLocal()
     try:
         reading = SensorReading(
-            timestamp=datetime.now(timezone.utc),
-            reader=1,
-            location=1,
-            sensor_0_name=sensor_0_name,
-            sensor_0_value=sensor_0_value,
-            sensor_1_name=sensor_1_name,
-            sensor_1_value=sensor_1_value,
-            sensor_2_name=sensor_2_name,
-            sensor_2_value=sensor_2_value,
-            sensor_3_name=sensor_3_name,
-            sensor_3_value=sensor_3_value,
-            sensor_4_name=sensor_4_name,
-            sensor_4_value=sensor_4_value
+            time=datetime.now(timezone.utc),
+            reader=reader,
+            location=location,
+            sensor_type=sensor_type,
+            value=value,
+            unit=unit,
+            topic=topic
         )
         db.add(reading)
         db.commit()
-        print(f"[{reading.timestamp.strftime('%Y-%m-%d %H:%M:%S')}] Inserted: co2={sensor_0_value}, humidity={sensor_1_value if sensor_1_value is not None else 'N/A'}, temperature={sensor_2_value if sensor_2_value is not None else 'N/A'}, celcius={sensor_3_value if sensor_3_value is not None else 'N/A'}, fahrenheit={sensor_4_value if sensor_4_value is not None else 'N/A'}")
+        logger.info(f"Inserted sensor data: {sensor_type}={value}{unit}")
     except Exception as e:
         db.rollback()
-        print(f"Error inserting data into the database: {e}")
+        logger.error(f"Error inserting data into the database: {e}")
+    finally:
+        db.close()
+
+def save_multiple_readings(readings):
+    db = SessionLocal()
+    try:
+        timestamp = datetime.now(timezone.utc)
+        for data in readings:
+            reading = SensorReading(
+                time=timestamp,
+                reader=data.get('reader', 1),
+                location=data.get('location', 1),
+                sensor_type=data['sensor_type'],
+                value=data['value'],
+                unit=data['unit'],
+                topic=data.get('topic')
+            )
+            db.add(reading)
+        db.commit()
+        logger.info(f"Inserted {len(readings)} sensor readings at {timestamp}")
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Error inserting batch data into the database: {e}")
     finally:
         db.close()
