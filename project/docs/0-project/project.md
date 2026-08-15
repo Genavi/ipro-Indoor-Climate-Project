@@ -44,15 +44,16 @@ gantt
     excludes weekends
     Unfreeze Project :done, milestone, t0, 2026-08-10, 0d
     Working on project : t01, 2026-08-10, 5d
-    Improve data connection :done, t02, 2026-08-10, 3d
-    Add add. sensors : t03, 2026-08-13, 2d
+    Improve data connection:done, t02, 2026-08-10, 5d
+    Improve error handling :t03, 2026-08-12, 3d
     Working on project : t04, 2026-08-17, 5d
-    Add add. datasources : t05, 2026-08-17, 5d
-    Feedback-Markt : milestone, t6, 2026-08-17, 0d
-    Working on project : t07, 2026-08-24, 5d
-    Working on project : t08, 2026-08-31, 5d
-    Working on project : t09, 2026-09-07, 1d
-    Interim submission : milestone, t10, 2026-09-08, 0d
+    Add add. sensors : t05, 2026-08-17, 5d
+    Add add. datasources : t06, 2026-08-17, 5d
+    Feedback-Markt : milestone, t7, 2026-08-17, 0d
+    Working on project : t08, 2026-08-24, 5d
+    Working on project : t09, 2026-08-31, 5d
+    Working on project : t10, 2026-09-07, 1d
+    Interim submission : milestone, t11, 2026-09-08, 0d
 ```
 
 ## Project Levels
@@ -75,10 +76,92 @@ gantt
 - Project
     - [x]  Plan additional features for part two of the project
     - [x]  Improve data connection on Raspberry Pi and FeatherS3 devices to ensure reliable data transmission to the MQTT broker
+    - [x]  Improve error handling in the data collection and transmission process
     - [ ]  Add additional datasources to the Grafana dashboard (e.g., weather data, container metrics)
-    - [ ]  Add an additional sensor for the Window state (open/closed) and display it on the dashboard
+    - [ ]  Add an additional sensors (eg. for the Window state (open/closed), light intensity, and motion detection) and display it on the dashboard
+
+
+### 14 August 2026
+
+> A big problem I had was that my python script would crash silently. For example, if the MQTT client could not connect to the broker, the script would crash without any error message. I added a lot of logging to the script, so that I can see what is happening and where the script is failing. I also added a retry mechanism for the MQTT client connection, so that it will keep trying to connect to the broker until it succeeds. 
+>
+> - Structured logging at INFO level with timestamps
+> - Environment validation before attempting connections
+> - Graceful shutdown handling (SIGINT/KeyboardInterrupt)
+> - Detailed error messages with stack traces for debugging
+> - Proper exit codes (0 for success, 1 for errors)
+>
+> To make sure the script validates configuration before attempting connections, I added a function that checks if all required environment variables are set and valid. 
+> - Conditional validation: Only validates database vars if OUTPUT_METHOD=database
+> - Clear error messages: Describes each missing variable's purpose
+> - Password masking: Logs variable names but masks password values
+> - Network checking: check_network_connectivity() tests DNS resolution
+
+> For the data collection I still had the old column based schema in `utils/database.py`. In alemic I already had a new schema with a more flexible table structre. I updated the `utils/database.py` to use the new schema.
+>
+> Old Schema:
+> ```
+> timestamp, reader, location, 
+> sensor_0_name, sensor_0_value,
+> sensor_1_name, sensor_1_value, ...
+> ```
+>
+> New Schema:
+> ```
+> time, reader, location, topic, sensor_type, value, unit
+> ```
+> Added new function `save_multiple_readings`and updated `save_to_database` to handle the new schema and save multiple readings at once. This allows for more flexibility in the types of sensors and readings that can be stored in the database, as well as easier querying and analysis of the data.
+
 
 ### 13 August 2026
+
+> Added comprehensive system metrics collection:
+> 
+> System Metrics:
+> - CPU (per-core and total usage)
+> - Memory (usage %, cache, buffers, swap, active/inactive)
+> - Disk (usage by mount point)
+> - Network (traffic by interface)
+> - System load and uptime
+> 
+> Docker Container Metrics:
+> - Container CPU usage
+> - Container memory usage
+> - Container network I/O
+> - Container block I/O (available but not yet visualized)
+> 
+> PostgreSQL Output Enhancement:
+> - Auto-creates tables for all metrics
+> - Automatically converts tables to TimescaleDB hypertables with 1-day - > chunk intervals
+> - Tables created: cpu, mem, disk, net, system, docker_container_*
+> 
+> ```ini
+> # telegraf.conf
+> [[outputs.postgresql]]
+>   create_templates = [
+>     '''CREATE TABLE IF NOT EXISTS {{.table}} ({{.columns}})''',
+>     '''SELECT create_hypertable({{.table|quoteLiteral}}, 'time', chunk_time_interval => INTERVAL '1 day', if_not_exists => TRUE)''',
+>   ]
+> ```
+
+> Raspberry Pi MQTT connections timing out, packets not being forwarded through Tailscale VPN.
+>
+> Root Cause: Tailscale container running in userspace networking mode with network_mode: host doesn't create the tailscale0 network interface, causing packet forwarding to fail.
+>
+> Solution:
+> - Added TS_USERSPACE=false environment variable to force kernel networking mode
+> - Verified tailscale0 interface creation with proper IP assignment (100.109.73.83)
+> - This enables proper packet forwarding from Raspberry Pi (100.92.211.120) to Mosquitto
+>
+> ```ini
+> # docker-compose.yml - tailscale service
+> environment:
+>   - TS_USERSPACE=false  # Force kernel mode networking
+> ```
+>
+> - Ensures Mosquitto listens on all container interfaces, allowing Docker port forwarding to work
+> - Required for Tailscale VPN traffic to reach the broker
+> - Security maintained via authentication (`allow_anonymous false`) and DigitalOcean firewall rules
 
 ### 12 August 2026
 > I found that the MQTT client is failing to connect, because it can't resolve the hostname `iot-gateway`. The error `socket.gaierror: [Errno -2] Name or service not known` showed me the DNS lookup failed because the Raspberry Pi was not connected to the Tailscale network. I created an additional systemd service that starts Tailscale on boot. This way, the Raspberry Pi will automatically connect to the Tailscale network when it boots up, ensuring that the MQTT client can resolve the hostname and connect to the broker. To keep the Auth Key secure and easy to maintain, I created a file `/etc/tailscale/authkey` and added the Auth Key to that file. The systemd service reads the Auth Key from that file when starting Tailscale. I use the `--reset` tag to ensure that the Tailscale connection is reset and re-established on each boot, which helps to avoid any potential issues with stale connections or cached DNS entries. I also added the `--accept-routes` tag to allow the Raspberry Pi to accept routes from other devices on the Tailscale network, which is necessary for proper communication with the MQTT broker.
