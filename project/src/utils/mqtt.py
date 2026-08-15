@@ -4,6 +4,13 @@ import json
 logger = logging.getLogger(__name__)
 
 def write_mqtt(client, data):
+    """
+    Publish sensor data to MQTT broker.
+
+    Args:
+        client: MQTT client instance.
+        data: Dictionary containing sensor data with keys 'sensor_type', 'value', and 'unit'.
+    """
 
     if client is None:
         logger.error("MQTT client is not connected. Cannot publish data.")

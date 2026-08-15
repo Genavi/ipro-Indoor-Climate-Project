@@ -11,6 +11,10 @@ from src.database.models import SensorReading
 logger = logging.getLogger(__name__)
 
 def run_migrations():
+    """
+    Run Alembic migrations to update the database schema to the latest version.
+    """
+
     logger.info("Checking for database updates...")
     try:
         alembic_cfg = Config("alembic.ini")
@@ -21,6 +25,17 @@ def run_migrations():
         sys.exit(1)
 
 def save_to_database(sensor_type, value, unit, reader=1, location=1, topic=None):
+    """
+    Save a single sensor reading to the database using the normalized schema.
+
+    Args:
+        sensor_type: Type of sensor (e.g., 'co2', 'humidity', 'temperature')
+        value: Sensor reading value
+        unit: Unit of measurement (e.g., 'ppm', '%', '°C')
+        reader: Reader ID (default: 1)
+        location: Location ID (default: 1)
+        topic: MQTT topic (optional)
+    """
     db = SessionLocal()
     try:
         reading = SensorReading(
@@ -42,6 +57,19 @@ def save_to_database(sensor_type, value, unit, reader=1, location=1, topic=None)
         db.close()
 
 def save_multiple_readings(readings):
+    """
+    Save multiple sensor readings in a batch.
+
+    Args:
+        readings: List of dicts with keys: sensor_type, value, unit, [reader, location, topic]
+
+    Example:
+        save_multiple_readings([
+            {'sensor_type': 'co2', 'value': 450.2, 'unit': 'ppm'},
+            {'sensor_type': 'humidity', 'value': 55.3, 'unit': '%'},
+            {'sensor_type': 'temperature', 'value': 22.5, 'unit': '°C'}
+        ])
+    """
     db = SessionLocal()
     try:
         timestamp = datetime.now(timezone.utc)

@@ -14,6 +14,16 @@ def to_float(value):
         return None
 
 def start_reading(port, baudrate, output="database", client=None):
+    """
+    Start reading data from the serial port and process it based on the output method.
+
+    Args:
+        port: Serial port to read from (e.g., '/dev/ttyUSB0')
+        baudrate: Baud rate for the serial connection (e.g., 9600)
+        output: Output method ('database' or 'mqtt')
+        client: MQTT client instance (required if output is 'mqtt')
+    """
+
     logger.info(f"Reading data from serial port {port} using baudrate {baudrate}...")
 
     try:
