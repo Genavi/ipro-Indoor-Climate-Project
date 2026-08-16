@@ -29,11 +29,10 @@ def read_light_percentage():
     Read light sensor and convert to percentage (0-100%).
     Grove Light Sensor outputs voltage proportional to light intensity.
     """
-    raw_value = light_sensor.value
-    voltage = (raw_value / 65535) * 3.3
-    percentage = (voltage / 3.3) * 100
-    
-    return percentage
+    return {
+        "voltage": (light_sensor.value * 3.3) / 65536,
+        "percentage": (light_sensor.value / 65535) * 100
+    }
 
 while True:
     try:      
@@ -45,7 +44,8 @@ while True:
             ("temperature", "°C", readings["temperature"]),
             ("temperature", "°F", readings["temperature"] * 9 / 5 + 32),
             ("humidity", "%", readings["humidity"]),
-            ("light", "%", light)
+            ("light_voltage", "V", light["voltage"]),
+            ("light", "%", light["percentage"]),
         ]
         
         for sensor_type, unit, value in payloads:
