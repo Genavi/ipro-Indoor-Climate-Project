@@ -11,14 +11,14 @@
     <img src="https://img.shields.io/coveralls/github/badges/shields"alt="Code Coverage"></a>
  </p>-->
 
- <kbd><img src="./project/docs/images/grafana-dashboard_v1.png" width="600" /></kbd>
+ <kbd><img src="./project/docs/images/grafana-dashboard_v2.png" width="600" /></kbd>
 
  <p>
-  This repository contains the code and resources for the Indoor Climate Project (ipro).
+  A real-time indoor climate monitoring system that tracks CO₂ levels, temperature, humidity, and ambient light. Data is collected from ESP32-S3 sensors and visualized through modern Grafana dashboards optimized for Desktop and iPad displays.
  </p>
 
  <p>
-  Check the <a href='#'>Demo</a> (planned).
+  <strong>Live Monitoring:</strong> Auto-refreshing dashboards with air quality scoring, threshold alerts, and dual-axis sensor visualization.
  </p>
 
  <h2>Technologies Used</h2>
