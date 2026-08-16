@@ -43,17 +43,18 @@ gantt
     dateFormat YYYY-MM-DD
     excludes weekends
     Unfreeze Project :done, milestone, t0, 2026-08-10, 0d
-    Working on project : t01, 2026-08-10, 5d
+    Working on project :done,  t01, 2026-08-10, 5d
     Improve data connection:done, t02, 2026-08-10, 5d
-    Improve error handling :t03, 2026-08-12, 3d
-    Working on project : t04, 2026-08-17, 5d
-    Add add. sensors : t05, 2026-08-17, 5d
-    Add add. datasources : t06, 2026-08-17, 5d
-    Feedback-Markt : milestone, t7, 2026-08-17, 0d
-    Working on project : t08, 2026-08-24, 5d
-    Working on project : t09, 2026-08-31, 5d
-    Working on project : t10, 2026-09-07, 1d
-    Interim submission : milestone, t11, 2026-09-08, 0d
+    Improve error handling :done, t03, 2026-08-12, 3d
+    Add add. sensors :done, t04, 2026-08-14, 1d
+    Working on project : t05, 2026-08-17, 5d
+    Add add. sensors : t06, 2026-08-17, 5d
+    Add add. datasources : t07, 2026-08-17, 5d
+    Feedback-Markt : milestone, t8, 2026-08-17, 0d
+    Working on project : t09, 2026-08-24, 5d
+    Working on project : t10, 2026-08-31, 5d
+    Working on project : t11, 2026-09-07, 1d
+    Interim submission : milestone, t12, 2026-09-08, 0d
 ```
 
 ## Project Levels
@@ -77,8 +78,22 @@ gantt
     - [x]  Plan additional features for part two of the project
     - [x]  Improve data connection on Raspberry Pi and FeatherS3 devices to ensure reliable data transmission to the MQTT broker
     - [x]  Improve error handling in the data collection and transmission process
-    - [ ]  Add additional datasources to the Grafana dashboard (e.g., weather data, container metrics)
-    - [ ]  Add an additional sensors (eg. for the Window state (open/closed), light intensity, and motion detection) and display it on the dashboard
+    - [x]  Add an additional sensors (eg. for the Window state (open/closed), light intensity, and motion detection) and display it on the dashboard
+
+
+### 16 August 2026
+
+> Added Grove Light Sensor v1.1 by Seeed to the FeatherS3 hardware setup to measure ambient light levels. Updated the firmware to v5 to read light sensor data via analog pin A0 and convert it to voltage and percentage. The sensor data is now published alongside CO2, temperature, and humidity readings.
+>
+> Created a Grafana dashboard specifically for the iPad layout:
+>
+>  <kbd><img src="../..//docs/images/grafana-dashboard_v2.png" width="500" /></kbd>
+>
+> Resources:
+> - Grove Shield for FeatherS3: https://www.seeedstudio.com/Grove-Shield-for-Particle-Mesh-p-4080.html
+> - Voltage calculation for light sensor: 
+>   - https://docs.circuitpython.org/en/latest/shared-bindings/analogio/index.html
+>   - https://learn.adafruit.com/circuitpython-essentials/circuitpython-analog-in
 
 
 ### 14 August 2026
