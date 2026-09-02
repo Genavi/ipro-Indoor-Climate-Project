@@ -62,3 +62,13 @@ class SensorReading(Base):
 
     reader_rel = relationship("Reader", back_populates="readings")
     location_rel = relationship("Location", back_populates="readings")
+
+class WeatherCurrent(Base):
+    __tablename__ = "weather_current"
+
+    time = Column(DateTime(timezone=True), primary_key=True, nullable=False)
+    latitude = Column(Float)
+    longitude = Column(Float)
+    temperature = Column(Float)
+    humidity = Column(Float)
+    pressure = Column(Float)

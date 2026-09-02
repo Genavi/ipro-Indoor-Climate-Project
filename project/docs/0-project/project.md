@@ -47,14 +47,15 @@ gantt
     Improve data connection:done, t02, 2026-08-10, 5d
     Improve error handling :done, t03, 2026-08-12, 3d
     Add add. sensors :done, t04, 2026-08-14, 1d
-    Working on project : t05, 2026-08-17, 5d
+    Working on project :done, t05, 2026-08-17, 5d
     Add add. sensors : t06, 2026-08-17, 5d
-    Add add. datasources : t07, 2026-08-17, 5d
-    Feedback-Markt : milestone, t8, 2026-08-17, 0d
+    Add add. datasources :done, t07, 2026-08-17, 5d
+    Feedback-Markt :done, milestone, t8, 2026-08-17, 0d
     Working on project : t09, 2026-08-24, 5d
-    Working on project : t10, 2026-08-31, 5d
-    Working on project : t11, 2026-09-07, 1d
-    Interim submission : milestone, t12, 2026-09-08, 0d
+    MeteoSwiss Data csv (python) : t10, 2026-08-24, 5d
+    Gemini prediction : t11, 2026-08-24, 5d
+    Working on project : t12, 2026-08-31, 5d
+    Interim submission : milestone, t14, 2026-09-08, 0d
 ```
 
 ## Project Levels
@@ -70,6 +71,81 @@ gantt
 
 
 # Project Log
+
+## Week of 17 August 2026
+
+### Tasks:
+- Project
+    - [x]  Research external datasources for Geo Data (MeteoSwiss, Open-Meteo)
+    - [x]  Configure Telegraf to ingest data from Open-Meteo API
+    - [ ]  Add additional sensors (eg. for the Window state (open/closed), and motion detection) and display it on the dashboard
+
+### 23 August 2026
+
+> Successfully configured Telegraf to fetch weather data from Open-Meteo API after several configuration attempts. The HTTP input plugin now pulls hourly weather forecasts for the location and forwards them to TimescaleDB.
+>
+> I used telegrafs `[[inputs.http]]` plugin to fetch the data, `[[inputs.http.json_v2]]` to parse the JSON response, and `[[outputs.postgresql]]` to write the data to the database. The configuration is as follows:
+```conf
+[[inputs.http]]
+  urls = ["https://api.open-meteo.com/v1/forecast?latitude=47.3917&longitude=8.0511&current=temperature_2m,relative_humidity_2m,surface_pressure&timezone=UTC"]
+  method = "GET"
+  timeout = "10s"
+  interval = "30m"
+  data_format = "json_v2"
+
+  [[inputs.http.json_v2]]
+    measurement_name = "weather_current"
+
+    [[inputs.http.json_v2.field]]
+      path = "current.temperature_2m"
+      rename = "temperature"
+      type = "float"
+
+    [[inputs.http.json_v2.field]]
+      path = "current.relative_humidity_2m"
+      rename = "humidity"
+      type = "float"
+
+    [[inputs.http.json_v2.field]]
+      path = "current.surface_pressure"
+      rename = "pressure"
+      type = "float"
+
+    [[inputs.http.json_v2.field]]
+      path = "latitude"
+      type = "float"
+
+    [[inputs.http.json_v2.field]]
+      path = "longitude"
+      type = "float"
+```
+>
+> Had to update the database with a new table `weather_current` to store the current weather data. Used Alembic to create the migration. The table schema is as follows:
+> ```python
+> class WeatherCurrent(Base):
+>     __tablename__ = "weather_current"
+> 
+>     time = Column(DateTime(timezone=True), primary_key=True, nullable=False)
+>     latitude = Column(Float)
+>     longitude = Column(Float)
+>     temperature = Column(Float)
+>     humidity = Column(Float)
+>     pressure = Column(Float)
+> ```
+
+### 20 August 2026
+
+> Attempted to create a Python script to fetch geodata from Open-Meteo API. Data format was unclear and difficult to parse properly. Decided to pause this approach and explore Telegraf-based ingestion instead.
+
+### 18 August 2026
+
+> Researched options for integrating external geodata sources into the project. Evaluated two approaches:
+> - Python script for custom data fetching and processing
+> - Telegraf HTTP input plugin for automated data ingestion
+>
+> Explored available datasources:
+> - MeteoSwiss homogeneous climate data: https://opendatadocs.meteoswiss.ch/c-climate-data/c1-climate-stations_homogeneous?metadata=parameters
+> - Open-Meteo API for weather forecasts: https://open-meteo.com/en/docs
 
 ## Week of 10 August 2026
 
