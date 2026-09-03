@@ -103,6 +103,23 @@ services:
     networks:
       - iot_net
 
+  climate-advisor:
+    build:
+      context: .
+      dockerfile: ./src/climate_advisor/Dockerfile
+    container_name: climate-advisor
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_HOST=postgres
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    networks:
+      - iot_net
+
 networks:
   iot_net:
     driver: bridge
