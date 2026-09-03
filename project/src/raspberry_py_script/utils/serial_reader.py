@@ -2,8 +2,8 @@ import serial
 import json
 import logging
 
-from src.utils.database import save_multiple_readings
-from src.utils.mqtt import write_mqtt
+from utils.database import save_multiple_readings
+from utils.mqtt import write_mqtt
 
 logger = logging.getLogger(__name__)
 

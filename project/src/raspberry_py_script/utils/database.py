@@ -5,8 +5,8 @@ from alembic.config import Config
 from alembic import command
 from datetime import datetime, timezone
 
-from src.database.connection import SessionLocal
-from src.database.models import SensorReading
+from database.connection import SessionLocal
+from database.models import SensorReading
 
 logger = logging.getLogger(__name__)
 

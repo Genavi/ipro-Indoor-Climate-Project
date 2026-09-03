@@ -6,7 +6,7 @@ import socket
 import paho.mqtt.client as mqtt
 
 from paho.mqtt.enums import CallbackAPIVersion
-from src.utils.validate import check_network_connectivity
+from utils.validate import check_network_connectivity
 
 logger = logging.getLogger(__name__)
 

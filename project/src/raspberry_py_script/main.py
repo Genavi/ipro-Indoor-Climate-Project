@@ -4,10 +4,10 @@ import logging
 
 from dotenv import load_dotenv
 
-from src.utils.serial_reader import start_reading
-from src.utils.database import run_migrations
-from src.utils.validate import validate_env_vars
-from src.utils.mqtt import connect_mqtt_with_retry
+from utils.serial_reader import start_reading
+from utils.database import run_migrations
+from utils.validate import validate_env_vars
+from utils.mqtt import connect_mqtt_with_retry
 
 logging.basicConfig(
     level=logging.INFO,
