@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, Text, ForeignKey, Float, Numeric, DateTime
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
@@ -85,3 +86,13 @@ class MeteoSwissForecast(Base):
     value = Column(Float)
     unit = Column(Text)
     fetch_runtime = Column(DateTime(timezone=True), nullable=False)
+
+class ClimateAdvice(Base):
+    __tablename__ = "climate_advice"
+
+    time = Column(DateTime(timezone=True), primary_key=True, nullable=False)
+    station = Column(Text, primary_key=True, nullable=False)
+    predictions = Column(JSONB)
+    weather_events = Column(JSONB)
+    tips = Column(JSONB)
+    raw_response = Column(Text)
