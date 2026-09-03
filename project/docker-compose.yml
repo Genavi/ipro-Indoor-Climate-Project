@@ -87,6 +87,22 @@ services:
     networks:
       - iot_net
 
+  meteoswiss-fetcher:
+    build:
+      context: .
+      dockerfile: ./src/fetch_meteoswiss_data/Dockerfile
+    container_name: meteoswiss-fetcher
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_HOST=postgres
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
+    networks:
+      - iot_net
+
 networks:
   iot_net:
     driver: bridge
