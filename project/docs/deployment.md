@@ -82,18 +82,20 @@ Before deploying the application, ensure you have the following prerequisites in
 
     Set up the Tailscale Proxy if you want to access Grafana securely via Tailscale.
 
-    ```
-    $ docker-compose exec tailscale tailscale serve --https=443 http://grafana:3000                              
+    ```console
+    $ docker-compose exec tailscale tailscale serve --https=443 http://localhost:3000                              
     https://iot-gateway.tail7a645b.ts.net (tailnet only)
-    |-- / proxy http://grafana:3000
+    |-- / proxy http://localhost:3000
     ```
+
+    > **Note**: Use `localhost:3000` instead of `grafana:3000` because Tailscale runs on the host network and cannot resolve Docker service names.
 
     To later make sure the Tailscale Proxy is running, you can check the status again:
 
     ```console
     $ docker-compose exec tailscale tailscale serve status                              
     https://iot-gateway.tail7a645b.ts.net (tailnet only)
-    |-- / proxy http://grafana:3000
+    |-- / proxy http://localhost:3000
     ```
 
 9. **Access the Application**:
