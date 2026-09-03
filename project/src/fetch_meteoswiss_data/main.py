@@ -3,6 +3,7 @@ import logging
 
 from utils.config import STAC_BASE_URL, COLLECTION_ID, DEFAULT_PARAMS, STATION_NAME, STATION_ABBR, STATION_POI_ID, STATION_POI_TYPE_ID
 from utils.fetcher import get_latest_forecast_values
+from utils.formatter import format_for_timescaledb
 
 logging.basicConfig(
     level=logging.INFO,
@@ -51,6 +52,13 @@ def main():
 
         for param, details in results["values"].items():
             logger.info(f"{param}: {details.get('latest_value')} at {details.get('latest_time')}")
+
+        timescaledb_ready_data = format_for_timescaledb(results["values"], station, results['run_datetime'].isoformat())
+        logger.info("")
+        logger.info("Formatted data ready for TimescaleDB insertion:")
+        logger.info("-" * 50)
+        for entry in timescaledb_ready_data:
+            logger.info(f"{entry}")
 
     except Exception as e:
         logger.error(f"Error fetching forecast values: {e}")

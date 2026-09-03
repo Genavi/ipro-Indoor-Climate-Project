@@ -72,3 +72,16 @@ class WeatherCurrent(Base):
     temperature = Column(Float)
     humidity = Column(Float)
     pressure = Column(Float)
+
+class MeteoSwissForecast(Base):
+    __tablename__ = "meteoswiss_forecast"
+
+    time = Column(DateTime(timezone=True), primary_key=True, nullable=False)
+    parameter = Column(Text, primary_key=True, nullable=False)
+    station = Column(Text, primary_key=True, nullable=False)
+    abbreviation = Column(Text)
+    point_id = Column(Integer)
+    point_type_id = Column(Integer)
+    value = Column(Float)
+    unit = Column(Text)
+    fetch_runtime = Column(DateTime(timezone=True), nullable=False)
