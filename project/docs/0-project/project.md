@@ -96,8 +96,11 @@ gantt
 ### 31 August 2026
 
 > Started researching how I could integrate Gemini into the project. I already have some experience with the Google Agent Platform, Firebase AI Logic Functions, and Gemini API. I will try to setup a dedicated Agent in the Agent Platform for the Indoor Climate Project. The Agent will receive the climate data and prompt, pass it to its sub-agents for processing, predicting, and analyzing the data.
-
-<kbd><img src="../../docs/images/google-agent-platform.png" width="600" /></kbd>
+> - [Google Agent Platform](https://cloud.google.com/products/gemini-enterprise-agent-platform)
+> - [Gemini API](https://ai.google.dev/gemini-api/docs)
+> - [Gemini 3.8 Flash Model](https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash)
+>
+> <kbd><img src="../../docs/images/google-agent-platform.png" width="600" /></kbd>
 
 
 
