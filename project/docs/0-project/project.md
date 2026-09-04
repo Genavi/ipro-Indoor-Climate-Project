@@ -53,9 +53,9 @@ gantt
     Feedback-Markt :done, milestone, t8, 2026-08-17, 0d
     Working on project :done, t09, 2026-08-24, 5d
     MeteoSwiss Data csv (python) :done, t10, 2026-08-24, 5d
-    Working on project : t11, 2026-08-31, 5d
-    Gemini prediction : t12, 2026-08-31, 4d
-    Cleanup and finalize documentation : t13, 2026-09-04, 2d
+    Working on project : done, t11, 2026-08-31, 5d
+    Gemini prediction : done, t12, 2026-08-31, 4d
+    Cleanup and finalize documentation : done, t13, 2026-09-04, 2d
     Presentation : milestone, t14, 2026-09-07, 0d
 ```
 
@@ -73,7 +73,7 @@ gantt
     - [x]  Research how to integrate Gemini into the project
     - [x]  Implement Gemini prediction for indoor climate data
     - [x]  Visualize Gemini return on the Grafana dashboard alongside sensor and MeteoSwiss data
-    - [ ]  Update the documentation to reflect the new features and changes made the last weeks of the project
+    - [x]  Update the documentation to reflect the new features and changes made the last weeks of the project
 
 ### 04 September 2026
 
