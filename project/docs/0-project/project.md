@@ -51,26 +51,58 @@ gantt
     Add add. sensors : t06, 2026-08-17, 5d
     Add add. datasources :done, t07, 2026-08-17, 5d
     Feedback-Markt :done, milestone, t8, 2026-08-17, 0d
-    Working on project : t09, 2026-08-24, 5d
-    MeteoSwiss Data csv (python) : t10, 2026-08-24, 5d
-    Gemini prediction : t11, 2026-08-24, 5d
-    Working on project : t12, 2026-08-31, 5d
-    Interim submission : milestone, t14, 2026-09-08, 0d
+    Working on project :done, t09, 2026-08-24, 5d
+    MeteoSwiss Data csv (python) :done, t10, 2026-08-24, 5d
+    Working on project : t11, 2026-08-31, 5d
+    Gemini prediction : t12, 2026-08-31, 4d
+    Cleanup and finalize documentation : t13, 2026-09-04, 2d
+    Presentation : milestone, t14, 2026-09-07, 0d
 ```
 
-## Project Levels
-- [Level 0](../../../templates/fhnw-ipro-indoor-climate-genavi/level-0/README.md#building-blocks)
-- [Level 1](../../../templates/fhnw-ipro-indoor-climate-genavi/level-1/README.md#building-blocks)
-- [Level 2](../../../templates/fhnw-ipro-indoor-climate-genavi/level-2/README.md#building-blocks)
-- [Level 3](../../../templates/fhnw-ipro-indoor-climate-genavi/level-3/README.md#building-blocks)
-- [Level 4](../../../templates/fhnw-ipro-indoor-climate-genavi/level-4/README.md#building-blocks)
-
-
-## Research available Microcontroller and Sensors
+## Available Microcontroller and Sensors
+- [FHNW Hardware](../2-hardware/fhnw-hardware.md)
 - [Personal Hardware](../2-hardware/personal-hardware.md)
 
 
 # Project Log
+
+## Week of 24 August 2026
+
+### Tasks:
+- Project
+    - [x]  Research how to integrate MeteoSwiss data
+    - [x]  Implement integration of MeteoSwiss data into the project
+    - [x]  Visualize MeteoSwiss data on the Grafana dashboard alongside sensor data
+
+### 29 August 2026
+
+> Because I want it to run in as Docker Container, I first created a `scheduler.py` to manage the periodic execution of the `fetch_meteoswiss_data` service.
+> I use `APScheduler` because it provides a simple way to schedule jobs and manage their execution. The scheduler is configured to run the `fetch_meteoswiss_data` service every hour, ensuring that the latest forecast data is fetched and stored in the database.
+>
+> Then I setup the `database_writer.py` and `formatter.py` to handle writing the fetched data to the database and formatting it appropriately for the TimescaleDB.
+> The `Dockerfile` and `requirements.txt` were created to build and run the `fetch_meteoswiss_data` service as a Docker container alongside the existing services in the project.
+>
+> Added a new Visualization to Grafana like I did for open-meteo weather data.
+
+### 26 August 2026
+
+> Continued researching how to best fetch and integrate MeteoSwiss forecast data.
+>
+> Started implementing the `fetch_meteoswiss_data` service.
+>
+> Created the initial `main.py` with `utils`: `config.py`and `fetcher.py`.
+>
+> `config` contains the configuration settings for the `fetch_meteoswiss_data` service, such as API endpoints, database connection details, and scheduling intervals.
+> `fetcher` handles the actual fetching of data from the MeteoSwiss API.
+
+### 24 August 2026
+
+> Started researching possible solutions for fetching MeteoSwiss forecast data.
+> - [MeteoSwiss Open Data - Local forecast data](https://opendatadocs.meteoswiss.ch/e-forecast-data/e4-local-forecast-data)
+> - [caco3/MeteoSwiss-Forecast (GitHub)](https://github.com/caco3/MeteoSwiss-Forecast/blob/master/meteoswissForecast.py)
+> - [MeteoSwiss - Download data without coding skills](https://www.meteoswiss.admin.ch/services-and-publications/applications/ext/download-data-without-coding-skills.html#lang=en&mdt=normal&sid=BUS&col=ch.meteoschweiz.ogd-smn&pgid=&di=&tr=&hdr=)
+> - [MeteoSwiss - Measurement values (BUS station)](https://www.meteoswiss.admin.ch/services-and-publications/applications/measurement-values.html#param=messwerte-lufttemperatur-10min&station=BUS&table=false)
+
 
 ## Week of 17 August 2026
 
