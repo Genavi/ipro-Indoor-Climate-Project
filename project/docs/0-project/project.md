@@ -66,6 +66,41 @@ gantt
 
 # Project Log
 
+## Week of 31 August 2026
+
+### Tasks:
+- Project
+    - [x]  Research how to integrate Gemini into the project
+    - [x]  Implement Gemini prediction for indoor climate data
+    - [x]  Visualize Gemini return on the Grafana dashboard alongside sensor and MeteoSwiss data
+    - [ ]  Update the documentation to reflect the new features and changes made the last weeks of the project
+
+### 04 September 2026
+
+> Updated `config.py` and `agent_client.py` to use the Gemini API directly instead of the Gemini Agent. The `agent_client` now handles the connection to the Gemini API, prepares the prompt and response schema, sends the request, waits for the response, and returns it.
+>
+> The local test script `main.py` was updated to use the new `agent_client` implementation. It now sends a request with no sensor history, just to see how it reacts. I get a response from Gemini like I expected using the response schema.
+>
+> Create `data_collector.py` and `database_writer.py` to handle the collection of sensor data and MeteoSwiss data and writing the Gemini response to the database.
+>
+> Created `scheduler.py` to create a scheduled job that runs twice a day to use the Gemini API to predict the climate based on the last 48 hours of MeteoSwiss Data and the last 24 hours of sensor data. The response is then written to the database using `database_writer.py`.
+>
+> Created the `Dockerfile` and `requirements.txt`, and updated `docker-compose.yml` to build and run the `climate-advisor` service as a Docker container alongside the existing services in the project.
+
+### 02 September 2026
+
+> Created a python `main.py` file to test locally. The utils `config.py` and `agent_client.py` handle the configuration and communication with the Gemini Agent. The `agent_client` should handle the connection to the agent, wait for the response and return it. 
+>
+> But I found that I need more time to understand how to properly implement the Gemini Agent and how I would best integrate it. I need a Service Account with the neccessary permissions to acces the Agent. For now it would be easier to just use the Gemini API directly. Here we just need an API Key that I can create using google AI Studio.
+
+### 31 August 2026
+
+> Started researching how I could integrate Gemini into the project. I already have some experience with the Google Agent Platform, Firebase AI Logic Functions, and Gemini API. I will try to setup a dedicated Agent in the Agent Platform for the Indoor Climate Project. The Agent will receive the climate data and prompt, pass it to its sub-agents for processing, predicting, and analyzing the data.
+
+<kbd><img src="../../docs/images/google-agent-platform.png" width="600" /></kbd>
+
+
+
 ## Week of 24 August 2026
 
 ### Tasks:
