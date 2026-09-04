@@ -11,7 +11,7 @@
       <img src="https://img.shields.io/coveralls/github/badges/shields"alt="Code Coverage"></a>
   </p>-->
 
-  <kbd><img src="./project/docs/images/grafana-dashboard_v3.png" width="600" /></kbd>
+  <kbd><img src="./project/docs/images/grafana-dashboard_v3.png" width="800" /></kbd>
 
   <p>A real-time indoor climate monitoring system that tracks CO₂ levels, temperature, humidity, and ambient light. Data is collected from ESP32-S3 sensors and visualized through modern Grafana dashboards optimized for Desktop and iPad displays.</p>
 
