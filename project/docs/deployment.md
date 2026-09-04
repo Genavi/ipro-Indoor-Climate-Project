@@ -18,7 +18,7 @@ Before deploying the application, ensure you have the following prerequisites in
    SSH into your DigitalOcean Droplet using the provided credentials.
 
    ```console
-   $ ssh -i /Users/davidringgenberg/.ssh/id_ed25519_digitalocean_indoorclimate 'root@159.89.5.63'
+   $ ssh -i <path_to_your_private_key> 'root@<droplet_ip_or_domain>'
    ```
 
 2. **Clone the Repository**:
@@ -26,7 +26,8 @@ Before deploying the application, ensure you have the following prerequisites in
 
    ```console
    $ cd /opt
-   $ git clone git@gitlab.fhnw.ch:david.ringgenberg/ipro-indoor-climate-project.git
+   $ git clone git@gitlab.fhnw.ch:david.ringgenberg/ipro-indoor-climate-project.git (from gitlab.fhnw.ch)
+   $ git clone git@github.com:Genavi/IPRO-Indoor-Climate-Project.git                (from github.com)
    $ cd ipro-indoor-climate-project
    ```
 
@@ -177,6 +178,7 @@ Before deploying the application, ensure you have the following prerequisites in
       >
       > ```console
       > $ journalctl -u tailscale-autoconnect.service -f
+      > $ sudo systemctl restart tailscale-autoconnect.service
       > ```
 
    2. **IOT MQTT Bridge**:
@@ -227,6 +229,7 @@ Before deploying the application, ensure you have the following prerequisites in
       > 
       > ```console
       > $ journalctl -u iot_mqtt_bridge.service -f
+      > $ sudo systemctl restart iot_mqtt_bridge.service
       > ```
 
    

@@ -569,10 +569,6 @@
                 "value": "left"
               },
               {
-                "id": "custom.axisLabel",
-                "value": "Light Level (%)"
-              },
-              {
                 "id": "min",
                 "value": 0
               },
@@ -604,13 +600,12 @@
                 "value": "right"
               },
               {
-                "id": "custom.axisLabel",
-                "value": "Voltage (V)"
-              },
-              {
                 "id": "custom.lineStyle",
                 "value": {
-                  "dash": [10, 10],
+                  "dash": [
+                    10,
+                    10
+                  ],
                   "fill": "dash"
                 }
               },
@@ -783,7 +778,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 24,
+        "w": 12,
         "x": 0,
         "y": 10
       },
@@ -832,6 +827,379 @@
       ],
       "title": "Temperature & Humidity",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "bfc0wjl07m9dsb"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Wind direction"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "from": 0,
+                      "result": {
+                        "index": 0,
+                        "text": "↓"
+                      },
+                      "to": 22.5
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "from": 22.5,
+                      "result": {
+                        "index": 1,
+                        "text": "↙"
+                      },
+                      "to": 77.5
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "from": 77.5,
+                      "result": {
+                        "index": 2,
+                        "text": "←"
+                      },
+                      "to": 112.5
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "from": 112.5,
+                      "result": {
+                        "index": 3,
+                        "text": "↖"
+                      },
+                      "to": 157.5
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "from": 157.5,
+                      "result": {
+                        "index": 4,
+                        "text": "↑"
+                      },
+                      "to": 202.5
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "from": 202.5,
+                      "result": {
+                        "index": 5,
+                        "text": "↗"
+                      },
+                      "to": 247.5
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "from": 247.5,
+                      "result": {
+                        "index": 6,
+                        "text": "→"
+                      },
+                      "to": 292.5
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "from": 292.5,
+                      "result": {
+                        "index": 7,
+                        "text": "↘"
+                      },
+                      "to": 337.5
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "from": 337.5,
+                      "result": {
+                        "index": 8,
+                        "text": "↓"
+                      },
+                      "to": 360
+                    },
+                    "type": "range"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Wind speed"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "velocitykmh"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Temperature"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "celsius"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 12,
+        "y": 10
+      },
+      "id": 21,
+      "links": [
+        {
+          "targetBlank": true,
+          "title": "Source: MeteoSwiss",
+          "url": "https://www.meteoswiss.admin.ch/services-and-publications/applications/measurement-values.html#param=messwerte-lufttemperatur-10min&station=BUS&table=false"
+        }
+      ],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 16,
+          "valueSize": 48
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "dataset": "sensor_data",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "bfc0wjl07m9dsb"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT\n  time AS \"time\",\n  value as \"Temperature\"\nFROM meteoswiss_forecast\nWHERE\n  $__timeFilter(time) AND\n  parameter = 'temperature'\nORDER BY time DESC\nLIMIT 1",
+          "refId": "C",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        },
+        {
+          "dataset": "sensor_data",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "bfc0wjl07m9dsb"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT\n  time AS \"time\",\n  value as \"Wind speed\"\nFROM meteoswiss_forecast\nWHERE\n  $__timeFilter(time) AND\n  parameter = 'wind_speed'\nORDER BY time DESC\nLIMIT 1",
+          "refId": "B",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        },
+        {
+          "dataset": "sensor_data",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "bfc0wjl07m9dsb"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  time AS \"time\",\n  value as \"Wind direction\"\nFROM meteoswiss_forecast\nWHERE\n  $__timeFilter(time) AND\n  parameter = 'wind_direction'\nORDER BY time DESC\nLIMIT 1",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Source: MeteoSwiss",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "uid": "grafana-postgresql-datasource"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 12,
+        "y": 14
+      },
+      "id": 20,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 16,
+          "valueSize": 18
+        },
+        "textMode": "value_and_name",
+        "wideLayout": false
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "dataset": "sensor_data",
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT tip AS \"Tip\"\nFROM (\n  SELECT tip\n  FROM climate_advice, jsonb_array_elements_text(tips) AS tip\n  ORDER BY time DESC\n  LIMIT 3\n) t\nORDER BY RANDOM()\nLIMIT 1;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -943,7 +1311,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"text-align: center; font-size: 11px; color: #bbb; padding: 10px 0;\">\n  Live monitoring • Auto-refresh every 5 seconds\n</div>",
+        "content": "<div style=\"text-align: center; font-size: 11px; color: #bbb; padding: 10px 0;\">\n  Live monitoring • Auto-refresh every 10 seconds\n</div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -953,7 +1321,7 @@
     }
   ],
   "preload": false,
-  "refresh": "5s",
+  "refresh": "10s",
   "schemaVersion": 42,
   "tags": [
     "climate",
@@ -1021,7 +1389,7 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {
@@ -1030,5 +1398,5 @@
   "timezone": "browser",
   "title": "Indoor Climate",
   "uid": "indoor-climate-ipad",
-  "version": 18
+  "version": 32
 }
