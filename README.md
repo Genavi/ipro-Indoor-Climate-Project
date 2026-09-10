@@ -90,4 +90,4 @@ Check the [project.md | Project Plan](project/docs/0-project/project.md#part-one
 Progress and updates are documented in the [project.md | Project Log](project/docs/0-project/project.md#project-log).
 
 # License
-TBD
+MIT
