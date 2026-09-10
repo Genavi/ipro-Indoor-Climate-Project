@@ -56,7 +56,7 @@ gantt
     Working on project : done, t11, 2026-08-31, 5d
     Gemini prediction : done, t12, 2026-08-31, 4d
     Cleanup and finalize documentation : done, t13, 2026-09-04, 2d
-    Presentation : milestone, t14, 2026-09-07, 0d
+    Presentation :done, milestone, t14, 2026-09-07, 0d
 ```
 
 ## Available Microcontroller and Sensors
