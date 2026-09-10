@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 0,
+  "id": 27,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -1018,8 +1018,7 @@
         },
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 48
+          "titleSize": 16
         },
         "textMode": "auto",
         "wideLayout": true
@@ -1311,7 +1310,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"text-align: center; font-size: 11px; color: #bbb; padding: 10px 0;\">\n  Live monitoring • Auto-refresh every 10 seconds\n</div>",
+        "content": "<div style=\"text-align: center; font-size: 11px; color: #bbb; padding: 10px 0;\">\n  Live monitoring • Auto-refresh every 15 seconds\n</div>",
         "mode": "html"
       },
       "pluginVersion": "12.3.2",
@@ -1321,7 +1320,7 @@
     }
   ],
   "preload": false,
-  "refresh": "10s",
+  "refresh": "15s",
   "schemaVersion": 42,
   "tags": [
     "climate",
@@ -1398,5 +1397,5 @@
   "timezone": "browser",
   "title": "Indoor Climate",
   "uid": "indoor-climate-ipad",
-  "version": 32
+  "version": 38
 }

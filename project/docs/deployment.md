@@ -72,7 +72,80 @@ Before deploying the application, ensure you have the following prerequisites in
     
     ```console
     $ docker-compose logs -f
-    ```
+    ```      
+    
+   > Troubleshooting: If mosquitto can't use port 1883, it could be a mosquitto service is aready running:
+   > 
+   > ```console
+   > $ docker compose logs telegraf --tail 30 && echo '---NETSTAT---' && (ss -tlnp | grep 1883 || echo 'no listener found via ss') && echo '---PS ALL---' && docker ps -a --filter name=mosquitto
+   > telegraf  | 2026-09-07T11:54:13Z W! Strict environment variable handling will be the new default starting with v1.38.0! If your configuration works with strict handling or you don't use environment variables it is safe to ignore   > this warning. Otherwise please explicitly add the --non-strict-env-handling flag!
+   > telegraf  | 2026-09-07T11:54:13Z I! Loading config: /etc/telegraf/telegraf.conf
+   > telegraf  | 2026-09-07T11:54:13Z I! Starting Telegraf 1.37.1 brought to you by InfluxData the makers of InfluxDB
+   > telegraf  | 2026-09-07T11:54:13Z I! Available plugins: 243 inputs, 9 aggregators, 35 processors, 26 parsers, 67 outputs, 8 secret-stores
+   > telegraf  | 2026-09-07T11:54:13Z I! Loaded inputs: cpu disk docker http mem mqtt_consumer net system
+   > telegraf  | 2026-09-07T11:54:13Z I! Loaded aggregators:
+   > telegraf  | 2026-09-07T11:54:13Z I! Loaded processors: converter
+   > telegraf  | 2026-09-07T11:54:13Z I! Loaded secretstores:
+   > telegraf  | 2026-09-07T11:54:13Z I! Loaded outputs: postgresql
+   > telegraf  | 2026-09-07T11:54:13Z I! Tags enabled: host=3c0ddd14cb98
+   > telegraf  | 2026-09-07T11:54:13Z I! [agent] Config: Interval:10s, Quiet:false, Hostname:"3c0ddd14cb98", Flush Interval:10s
+   > telegraf  | 2026-09-07T11:54:13Z I! [inputs.mqtt_consumer] Connected [tcp://mosquitto:1883]
+   > telegraf  | 2026-09-07T14:33:43Z W! Strict environment variable handling will be the new default starting with v1.38.0! If your configuration works with strict handling or you don't use environment variables it is safe to ignore   > this warning. Otherwise please explicitly add the --non-strict-env-handling flag!
+   > telegraf  | 2026-09-07T14:33:43Z I! Loading config: /etc/telegraf/telegraf.conf
+   > telegraf  | 2026-09-07T14:33:43Z I! Starting Telegraf 1.37.1 brought to you by InfluxData the makers of InfluxDB
+   > telegraf  | 2026-09-07T14:33:43Z I! Available plugins: 243 inputs, 9 aggregators, 35 processors, 26 parsers, 67 outputs, 8 secret-stores
+   > telegraf  | 2026-09-07T14:33:43Z I! Loaded inputs: cpu disk docker http mem mqtt_consumer net system
+   > telegraf  | 2026-09-07T14:33:43Z I! Loaded aggregators:
+   > telegraf  | 2026-09-07T14:33:43Z I! Loaded processors: converter
+   > telegraf  | 2026-09-07T14:33:43Z I! Loaded secretstores:
+   > telegraf  | 2026-09-07T14:33:43Z I! Loaded outputs: postgresql
+   > telegraf  | 2026-09-07T14:33:43Z I! Tags enabled: host=3c0ddd14cb98
+   > telegraf  | 2026-09-07T14:33:43Z I! [agent] Config: Interval:10s, Quiet:false, Hostname:"3c0ddd14cb98", Flush Interval:10s
+   > telegraf  | 2026-09-07T14:33:43Z I! [inputs.mqtt_consumer] Connected [tcp://mosquitto:1883]
+   > ---NETSTAT---
+   > LISTEN 0      4096                       0.0.0.0:1883       0.0.0.0:*    users:(("docker-proxy",pid=1469,fd=8))   
+   > LISTEN 0      4096                          [::]:1883          [::]:*    users:(("docker-proxy",pid=1484,fd=8))   
+   > ---PS ALL---
+   > CONTAINER ID   IMAGE                      COMMAND                  CREATED       STATUS         PORTS                                                                                      NAMES
+   > 4675292b4eb9   eclipse-mosquitto:latest   "/docker-entrypoint.…"   3 hours ago   Up 2 minutes   0.0.0.0:1883->1883/tcp, [::]:1883->1883/tcp, 0.0.0.0:9001->9001/tcp, [::]:9001->9001/tcp   mosquitto
+   > 
+   > $ systemctl status mosquitto --no-pager 2>&1 | head -20; echo '---'; ps -p 774 -o pid,ppid,cmd
+   > ● mosquitto.service - Mosquitto MQTT Broker
+   >      Loaded: loaded (/lib/systemd/system/mosquitto.service; disabled; vendor preset: enabled)
+   >      Active: active (running) since Mon 2026-09-07 14:40:17 UTC; 7s ago
+   >        Docs: man:mosquitto.conf(5)
+   >              man:mosquitto(8)
+   >     Process: 2611 ExecStartPre=/bin/mkdir -m 740 -p /var/log/mosquitto (code=exited, status=0/SUCCESS)
+   >     Process: 2612 ExecStartPre=/bin/chown mosquitto /var/log/mosquitto (code=exited, status=0/SUCCESS)
+   >     Process: 2613 ExecStartPre=/bin/mkdir -m 740 -p /run/mosquitto (code=exited, status=0/SUCCESS)
+   >     Process: 2614 ExecStartPre=/bin/chown mosquitto /run/mosquitto (code=exited, status=0/SUCCESS)
+   >    Main PID: 2615 (mosquitto)
+   >       Tasks: 1 (limit: 2216)
+   >      Memory: 5.8M
+   >         CPU: 21ms
+   >      CGroup: /system.slice/mosquitto.service
+   >              └─2615 /usr/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf
+   > 
+   > Sep 07 14:40:17 docker-ubuntu-s-1vcpu-2gb-amd-fra1-01 systemd[1]: Starting Mosquitto MQTT Broker...
+   > Sep 07 14:40:17 docker-ubuntu-s-1vcpu-2gb-amd-fra1-01 systemd[1]: Started Mosquitto MQTT Broker.
+   > ---
+   >     PID    PPID CMD
+   > 
+   > $  systemctl stop mosquitto && systemctl disable mosquitto && systemctl status mosquitto --no-pager 2>&1 | head -10
+   > Synchronizing state of mosquitto.service with SysV service script with /lib/systemd/systemd-sysv-install.
+   > Executing: /lib/systemd/systemd-sysv-install disable mosquitto
+   > ○ mosquitto.service - Mosquitto MQTT Broker
+   >      Loaded: loaded (/lib/systemd/system/mosquitto.service; disabled; vendor preset: enabled)
+   >      Active: inactive (dead)
+   >        Docs: man:mosquitto.conf(5)
+   >              man:mosquitto(8)
+   > 
+   > Sep 07 14:37:32 docker-ubuntu-s-1vcpu-2gb-amd-fra1-01 systemd[1]: mosquitto.service: Failed with result 'exit-code'.
+   > Sep 07 14:37:32 docker-ubuntu-s-1vcpu-2gb-amd-fra1-01 systemd[1]: Failed to start Mosquitto MQTT Broker.
+   > Sep 07 14:37:40 docker-ubuntu-s-1vcpu-2gb-amd-fra1-01 systemd[1]: mosquitto.service: Start request repeated too quickly.
+   > Sep 07 14:37:40 docker-ubuntu-s-1vcpu-2gb-amd-fra1-01 systemd[1]: mosquitto.service: Failed with result 'exit-code'.
+   > ```
+
 
 8. **Set Up Tailscale** (optional):
     If you are using Tailscale for secure access to your Droplet, ensure that the Tailscale service is running and properly configured. You can check the Tailscale status with:

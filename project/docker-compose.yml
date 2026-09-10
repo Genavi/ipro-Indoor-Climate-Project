@@ -37,7 +37,7 @@ services:
     restart: unless-stopped
     user: "telegraf:999"
     group_add:
-      - 999
+      - "999"
     depends_on:
       - postgres
       - mosquitto
@@ -54,8 +54,6 @@ services:
       - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /:/hostfs:ro
-    dns:
-      - 100.100.100.100
     networks:
       - iot_net
 
